@@ -1,0 +1,17 @@
+{
+  "name": "Transduce.md",
+  "version": "0.1.0",
+  "description": "",
+  "scripts": {
+    "start": "cleaver watch README.md",
+    "build": "cleaver README.md",
+    "//": "Don't use the ugly hack below in real life ;)",
+    "postinstall": "git reset -- node_modules/cleaver/lib/index.js"
+  },
+  "author": "Adrien Gibrat <a.gibrat@oodrive.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "cleaver": "0.8.7",
+    "highlights": "3.1.1"
+  }
+}
