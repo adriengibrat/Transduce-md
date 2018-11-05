@@ -103,31 +103,6 @@ body {
   overflow: hidden;
 }
 
-.slide-content svg[id^=mermaid] {
-  margin: auto;
-  display: block;
-  max-height: 60vh;
-}
-
-svg[id^=mermaid] .cluster rect {
-  fill: white!important;
-  stroke: #F5D380!important;
-}
-svg[id^=mermaid] .cluster text {
-  transform: translateY(.5em);
-  stroke: #00A69F;
-}
-svg[id^=mermaid] .node rect {
-  stroke: none;
-}
-svg[id^=mermaid] span.edgeLabel {
-  color: #333;
-}
-svg[id^=mermaid] span.edgeLabel:not(:empty) {
-  padding: 0 .3em;
-}
-
-
 .controls {
   position: absolute;
   bottom: 10px;
@@ -136,7 +111,6 @@ svg[id^=mermaid] span.edgeLabel:not(:empty) {
 }
 
 .controls .overview {
-  display: inline-block;
   float: left;
   color: #C7C7C7;
   margin-right: 15px;
@@ -307,121 +281,28 @@ table th {
           transition: width .15s ease-out;
 }
 
-.hidden,
-.slide-content svg[id^=mermaid].hidden {
-  display: none;
+.hidden {
+  visibility: hidden;
 }
 
-/* Code Highlighting */
-
-.editor .wrap-guide {
-  background: rgba(255, 255, 255, 0.1);
-}
-.editor .indent-guide {
-  color: rgba(255, 255, 255, 0.15);
-}
-.editor,
-.editor .gutter {
-  background-color: #282828;
-  color: #F8F8F2;
-}
-.editor.is-focused .cursor {
-  border-color: #F8F8F0;
-}
-.editor.is-focused .selection .region {
-  background-color: #49483E;
-}
-.editor.is-focused .line-number.cursor-line-no-selection {
-  background-color: #49483E;
-}
-.editor .invisible-character {
-  color: rgba(215, 215, 215, 0.15);
-}
-.editor .comment {
-  color: #75715E;
-}
-.editor .string {
-  color: #E6DB74;
-}
-.editor .constant.numeric {
-  color: #AE81FF;
-}
-.editor .constant.language {
-  color: #AE81FF;
-}
-.editor .constant.character,
-.editor .constant.other {
-  color: #AE81FF;
-}
-.editor .keyword {
-  color: #F92672;
-}
-.editor .storage {
-  color: #F92672;
-}
-.editor .storage.type {
-  font-style: italic;
-  color: #66D9EF;
-}
-.editor .entity.name.class {
-  text-decoration: underline;
-  color: #A6E22E;
-}
-.editor .entity.other.inherited-class {
-  font-style: italic;
-  text-decoration: underline;
-  color: #A6E22E;
-}
-.editor .entity.name.function {
-  color: #A6E22E;
-}
-.editor .entity.name.instance {
-  color: #66D9EF;
-}
-.editor .variable.parameter {
-  font-style: italic;
-  color: #FD971F;
-}
-.editor .entity.name.tag {
-  color: #F92672;
-}
-.editor .entity.other.attribute-name {
-  color: #A6E22E;
-}
-.editor .support.function {
-  color: #66D9EF;
-}
-.editor .support.constant {
-  color: #66D9EF;
-}
-.editor .support.type,
-.editor .support.class {
-  font-style: italic;
-  color: #66D9EF;
-}
-.editor .invalid {
-  color: #F8F8F0;
-  background-color: #F92672;
-}
-.editor .invalid.deprecated {
-  color: #F8F8F0;
-  background-color: #AE81FF;
-}
-.editor .class.jade {
-  color: #AE81FF;
-}
-pre {
-  white-space: normal;
-}
-code pre {
+code {
   display: block;
-  margin: 1rem 0;
-  padding: 1rem;
-  font-family: 'Inconsolata';
-  font-weight: 400;
-  overflow: hidden;
-  font-size: 2rem;
-  white-space: pre;
+  overflow-x: auto;
+  padding-left: 51px;
+  font-family: 'Inconsolata', monospace;
+  font-size: 25px;
+  background-color:#1e1e1e;
+  color: #d4d4D4;
+}
+.monaco-editor .monaco-editor-hover-content .hover-row {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+.monaco-editor .monaco-editor-hover .monaco-editor-hover-content {
+  max-width: 80vw;
 }
 
 /* Responsiveness */
@@ -596,7 +477,10 @@ compose transformations <br>without awareness of input <br>nor creation of inter
 <blockquote>
 <p><dfn title="Function that takes one or more functions as arguments / returns a function"><a href="https://www.youtube.com/watch?v=BMUiFMZr7vk">Higher-order function</a></dfn> that transform <br><dfn title="Function with exactly n arguments"><a href="https://xlinux.nist.gov/dads/HTML/naryfunc.html">n-ary function</a></dfn> to a chain of <em>n</em> <dfn title="Function that takes one argument"><a href="https://xlinux.nist.gov/dads/HTML/unaryfunc.html">unary function</a></dfn></p>
 </blockquote>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>fn</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>a</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>b</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>c</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>a</span></span><span>&nbsp;</span><span class="keyword operator arithmetic ts"><span>+</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>b</span></span><span>&nbsp;</span><span class="keyword operator arithmetic ts"><span>+</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>c</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta function-call ts"><span class="entity name function ts"><span>assert</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>curry</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>fn</span></span><span class="meta brace round ts"><span>)</span><span>(</span></span><span class="constant numeric decimal ts"><span>1</span></span><span class="meta brace round ts"><span>)</span><span>(</span></span><span class="constant numeric decimal ts"><span>2</span></span><span class="meta brace round ts"><span>)</span><span>(</span></span><span class="constant numeric decimal ts"><span>3</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator comparison ts"><span>===</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>6</span></span><span class="meta brace round ts"><span>)</span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;assert(curry(fn)(1,&nbsp;2)(3)&nbsp;===&nbsp;curry(fn)(1)(2,&nbsp;3))</span></span></span></div></pre>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { curry } <span class="hljs-keyword">from</span> <span class="hljs-string">'ramda'</span>
+<span class="hljs-keyword">const</span> fn = <span class="hljs-function">(<span class="hljs-params">a: <span class="hljs-built_in">number</span>, b: <span class="hljs-built_in">number</span>, c: <span class="hljs-built_in">number</span></span>) =&gt;</span> a + b + c
+<span class="hljs-keyword">const</span> result = curry(fn)(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>)(<span class="hljs-number">3</span>) <span class="hljs-comment">// 6</span>
+assert(curry(fn)(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)(<span class="hljs-number">3</span>) === curry(fn)(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>), <span class="hljs-string">'pragmatic curry ;)'</span>)
 </code></pre>
 <p><a href="https://ramdajs.com/docs">Ramda</a> &amp; <a href="https://gist.github.com/jfmengels/6b973b69c491375117dc">lodash/fp</a> docs</p>
 </section>
@@ -607,7 +491,12 @@ compose transformations <br>without awareness of input <br>nor creation of inter
         <div data-id="4" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="usual-example-">Usual example 😪</h2>
 <p><big style="color: red">❌</big> Loop 3&times;, allocating new array each time</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="keyword control export ts"><span>export</span></span><span>&nbsp;</span><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>exerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>posts</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>posts</span></span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>pick</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>title</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>body</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>update</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>body</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>replace</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string regexp ts"><span class="punctuation definition string begin ts"><span>/</span></span><span>&lt;</span><span class="constant other character-class set regexp"><span class="punctuation definition character-class regexp"><span>[</span></span><span class="keyword operator negation regexp"><span>^</span></span><span>&gt;</span><span class="punctuation definition character-class regexp"><span>]</span></span></span><span class="keyword operator quantifier regexp"><span>*</span></span><span>&gt;</span><span class="keyword operator quantifier regexp"><span>?</span></span><span class="punctuation definition string end ts"><span>/</span></span><span class="keyword other ts"><span>g</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span><span>)</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>update</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>body</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>truncate</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta objectliteral ts"><span class="punctuation definition block ts"><span>{</span></span><span>&nbsp;</span><span class="meta object member ts"><span class="meta object-literal key ts"><span>length</span></span><span class="meta object-literal key ts punctuation separator key-value ts"><span>:</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>17</span></span><span>&nbsp;</span></span><span class="punctuation definition block ts"><span>}</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span><span>)</span></span></span></div></pre>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, pick, replace, take, update } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> exerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span> posts
+  .map(pick([<span class="hljs-string">'title'</span>, <span class="hljs-string">'body'</span>]))
+  .map(update(<span class="hljs-string">'body'</span>, replace(<span class="hljs-regexp">/&lt;[^&gt;]*&gt;?/g</span>, <span class="hljs-string">''</span>)))
+  .map(update(<span class="hljs-string">'body'</span>, take&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-number">17</span>)))
 </code></pre>
 </section>
       </div>
@@ -617,7 +506,14 @@ compose transformations <br>without awareness of input <br>nor creation of inter
         <div data-id="5" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="fusion-">Fusion 😃</h2>
 <p><big style="color: green">✔</big> Loop once, allocating only one new array</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>extract</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>pick</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>title</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>body</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>clean</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>update</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>body</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>replace</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string regexp ts"><span class="punctuation definition string begin ts"><span>/</span></span><span>&lt;</span><span class="constant other character-class set regexp"><span class="punctuation definition character-class regexp"><span>[</span></span><span class="keyword operator negation regexp"><span>^</span></span><span>&gt;</span><span class="punctuation definition character-class regexp"><span>]</span></span></span><span class="keyword operator quantifier regexp"><span>*</span></span><span>&gt;</span><span class="keyword operator quantifier regexp"><span>?</span></span><span class="punctuation definition string end ts"><span>/</span></span><span class="keyword other ts"><span>g</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>shorten</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>update</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>body</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>truncate</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta objectliteral ts"><span class="punctuation definition block ts"><span>{</span></span><span>&nbsp;</span><span class="meta object member ts"><span class="meta object-literal key ts"><span>length</span></span><span class="meta object-literal key ts punctuation separator key-value ts"><span>:</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>17</span></span><span>&nbsp;</span></span><span class="punctuation definition block ts"><span>}</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="keyword control export ts"><span>export</span></span><span>&nbsp;</span><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>exerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>posts</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>posts</span></span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>post</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>shorten</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>clean</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>extract</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>post</span></span><span class="meta brace round ts"><span>)</span><span>)</span><span>)</span><span>)</span></span></span></div></pre>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, pick, replace, take, update } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> extract = pick([<span class="hljs-string">'title'</span>, <span class="hljs-string">'body'</span>])
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> clean = update(<span class="hljs-string">'body'</span>, replace(<span class="hljs-regexp">/&lt;[^&gt;]*&gt;?/g</span>, <span class="hljs-string">''</span>))
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> shorten = update(<span class="hljs-string">'body'</span>, take(<span class="hljs-number">17</span>))
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> exerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span> posts
+  .map(<span class="hljs-function">(<span class="hljs-params">post</span>) =&gt;</span> shorten(clean(extract(post))))
 </code></pre>
 </section>
       </div>
@@ -627,7 +523,11 @@ compose transformations <br>without awareness of input <br>nor creation of inter
         <div data-id="6" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="using-compose-">Using compose 😁</h2>
 <p><big style="color: green">✔</big> Semantic, concise &amp; efficient</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>summarize</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>compose</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>shorten</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>clean</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>extract</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;(post)&nbsp;=&gt;&nbsp;shorten(clean(extract(post))))</span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="keyword control export ts"><span>export</span></span><span>&nbsp;</span><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>exerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>summarize</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;(posts)&nbsp;=&gt;&nbsp;map(summarize,&nbsp;posts)</span></span></span></div></pre>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, Summary <span class="hljs-keyword">as</span> S, compose, map } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+<span class="hljs-keyword">import</span> { extract, clean, shorten } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-5'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> summarize = compose&lt;Post, S, S, S&gt;(shorten, clean, extract)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> exerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span> map(summarize, posts)
 </code></pre>
 </section>
       </div>
@@ -635,9 +535,16 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-7">
         <div data-id="7" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="more-generic-">More generic 😂</h2>
-<p><big style="color: green">✔</big> Readable, efficient, reusable</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>fuse</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>curry</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>fns</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>compose</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="keyword operator spread ts"><span>...</span></span><span class="variable other readwrite ts"><span>fns</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>a</span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="keyword control export ts"><span>export</span></span><span>&nbsp;</span><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>exerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>fuse</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span></span><span class="variable other readwrite ts"><span>shorten</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>clean</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>extract</span></span><span class="meta brace square ts"><span>]</span></span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;(fns)&nbsp;=&gt;&nbsp;{</span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;&nbsp;&nbsp;const&nbsp;fn&nbsp;=&nbsp;compose(...fns)</span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;&nbsp;&nbsp;return&nbsp;(a)&nbsp;=&gt;&nbsp;map(fn,&nbsp;a)</span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;}</span></span></span></div></pre>
+        <section class="slide-content"><h2 id="mixed-operations-">Mixed operations ? 😵</h2>
+<p><big style="color: red">❌</big> Loop 2&times;, allocates 3 new array</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, propEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+<span class="hljs-keyword">import</span> { summarize } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-6'</span>
+
+<span class="hljs-keyword">const</span> userExerpts = <span class="hljs-function">(<span class="hljs-params">userId: <span class="hljs-built_in">string</span>, n: <span class="hljs-built_in">number</span></span>) =&gt;</span> (posts: Post[]) =&gt; posts
+  .filter(propEq(<span class="hljs-string">'userId'</span>, userId))
+  .slice(<span class="hljs-number">0</span>, n)
+  .map(summarize)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> exerpts = userExerpts(<span class="hljs-string">'me'</span>, <span class="hljs-number">20</span>)
 </code></pre>
 </section>
       </div>
@@ -645,9 +552,14 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-8">
         <div data-id="8" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="mixed-operations-">Mixed operations ? 😵</h2>
-<p><big style="color: red">❌</big> Loop 2&times;, allocates 3 new array</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>userExerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>userId</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>n</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>posts</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>posts</span></span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>filter</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>matches</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta objectliteral ts"><span class="punctuation definition block ts"><span>{</span></span><span>&nbsp;</span><span class="meta object member ts"><span class="variable other readwrite ts"><span>userId</span></span><span>&nbsp;</span></span><span class="punctuation definition block ts"><span>}</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="support function ts"><span>slice</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="constant numeric decimal ts"><span>0</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>n</span></span><span class="meta brace round ts"><span>)</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>summarize</span></span><span class="meta brace round ts"><span>)</span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="keyword control export ts"><span>export</span></span><span>&nbsp;</span><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>exerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>userExerpts</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>me</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>20</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div></pre>
+        <section class="slide-content"><h2 id="combine-predicates-">Combine predicates 😆</h2>
+<p><big style="color: green">✔</big> Useful with filter, every, some, find...</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Predicate, all, <span class="hljs-built_in">any</span>, propEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> pass = <span class="hljs-function">(<span class="hljs-params">logic: <span class="hljs-keyword">typeof</span> all | <span class="hljs-keyword">typeof</span> <span class="hljs-built_in">any</span>, predicates: Predicate[]</span>) =&gt;</span> 
+  (value) =&gt; logic(<span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span> predicate(value), predicates)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> first = <span class="hljs-function">(<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt;</span> () =&gt; n-- &gt; <span class="hljs-number">0</span>
+<span class="hljs-keyword">const</span> filter = pass(all, [propEq(<span class="hljs-string">'userId'</span>, <span class="hljs-string">'me'</span>), first(<span class="hljs-number">20</span>)])
 </code></pre>
 </section>
       </div>
@@ -655,9 +567,17 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-9">
         <div data-id="9" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="combine-predicates-">Combine predicates 😆</h2>
-<p><big style="color: green">✔</big> Usable with filter, every, some, find, findIndex...</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>pass</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>curry</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>allOrAny</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>predicates</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>allOrAny</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="variable parameter ts"><span>p</span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>p</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>predicates</span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>all</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>curry</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>p</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>a</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>every</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>p</span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>any</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>curry</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>p</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>a</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>some</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>p</span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>take</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>n</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>n</span></span><span class="keyword operator decrement ts"><span>--</span></span><span>&nbsp;</span><span class="keyword operator relational ts"><span>&gt;</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>0</span></span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;pass(every,&nbsp;[matches({&nbsp;userId:&nbsp;&#39;me&#39;&nbsp;}),&nbsp;take(20)])</span></span></span></div></pre>
+        <section class="slide-content"><h2 id="still-no-mixed-operation-">Still no mixed operation 😵</h2>
+<p><big style="color: red">❌</big> Loop 2&times;, allocates 2 new array</p>
+<pre><code class="lang-typescript">
+<span class="hljs-keyword">import</span> { Post, all, propEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+<span class="hljs-keyword">import</span> { summarize } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-6'</span>
+<span class="hljs-keyword">import</span> { pass, first } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-8'</span>
+
+<span class="hljs-keyword">const</span> userExerpts = <span class="hljs-function">(<span class="hljs-params">userId, n</span>) =&gt;</span> (posts: Post[]) =&gt; posts
+  .filter(pass(all, [propEq({ userId }), first(n)]))
+  .map(summarize)
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> exerpts = userExerpts(<span class="hljs-string">'me'</span>, <span class="hljs-number">20</span>)
 </code></pre>
 </section>
       </div>
@@ -665,9 +585,17 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-10">
         <div data-id="10" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="still-no-mixed-operations-">Still no mixed operations 😵</h2>
-<p><big style="color: red">❌</big> Loop 2&times;, allocates 2 new array</p>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>passAll</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>pass</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>all</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>userExerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>userId</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>n</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>posts</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>posts</span></span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>filter</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>passAll</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>matches</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta objectliteral ts"><span class="punctuation definition block ts"><span>{</span></span><span>&nbsp;</span><span class="meta object member ts"><span class="variable other readwrite ts"><span>userId</span></span><span>&nbsp;</span></span><span class="punctuation definition block ts"><span>}</span></span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>take</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>n</span></span><span class="meta brace round ts"><span>)</span></span><span class="meta brace square ts"><span>]</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>map</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>summarize</span></span><span class="meta brace round ts"><span>)</span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="keyword control export ts"><span>export</span></span><span>&nbsp;</span><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>exerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>userExerpts</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="string quoted single ts"><span class="punctuation definition string begin ts"><span>&#39;</span></span><span>me</span><span class="punctuation definition string end ts"><span>&#39;</span></span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>20</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div></pre>
+        <section class="slide-content"><h2 id="reduce-all-the-things-">Reduce all the things 😎</h2>
+<p><big style="color: blue">‼</big> Implement all iteration operation with &#39;reduce&#39;</p>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Predicate, Mapper } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> append = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">value: T, a: T[]</span>) =&gt;</span> (a.push(value), a)
+<span class="hljs-keyword">const</span> filter = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">predicate: Predicate, a: T[]</span>) =&gt;</span> a.reduce&lt;T[]&gt;<span class="hljs-function">(<span class="hljs-params">(<span class="hljs-params">f, value</span>) =&gt;
+  predicate(<span class="hljs-params">value</span>) ? append(<span class="hljs-params">value, f</span>) : f, []</span>)
+<span class="hljs-params">const</span> <span class="hljs-params">take</span> = &lt;<span class="hljs-params">T</span>&gt;(<span class="hljs-params">n: <span class="hljs-built_in">number</span>, a: T[]</span>) =&gt;</span> a.reduce&lt;T[]&gt;<span class="hljs-function">(<span class="hljs-params">(<span class="hljs-params">t, value</span>) =&gt;
+  t.length &lt; n ? append(<span class="hljs-params">value, t</span>) : t, []</span>)
+<span class="hljs-params">const</span> <span class="hljs-params">map</span> = &lt;<span class="hljs-params">T</span>, <span class="hljs-params">U</span>&gt;(<span class="hljs-params">mapper: Mapper&lt;T, U&gt;, a: T[]</span>) =&gt;</span> a.reduce&lt;U[]&gt;<span class="hljs-function">(<span class="hljs-params">(<span class="hljs-params">m, value</span>) =&gt;
+  append(<span class="hljs-params">mapper(<span class="hljs-params">value</span>), m</span>), []</span>)</span>
 </code></pre>
 </section>
       </div>
@@ -675,8 +603,16 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-11">
         <div data-id="11" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="disclosure-i-big-style-color-red-vertical-align-sub-big-reduce">Disclosure: I <big style="color: red; vertical-align: sub;">❤</big> reduce</h2>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>sum</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>result</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>result</span></span><span>&nbsp;</span><span class="keyword operator arithmetic ts"><span>+</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>value</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts variable other readwrite ts"><span>total</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span>&nbsp;</span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span></span><span class="constant numeric decimal ts"><span>1</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>2</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>3</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>4</span></span><span class="meta brace square ts"><span>]</span></span></span><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>reduce</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>sum</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="constant numeric decimal ts"><span>0</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;10&nbsp;(0&nbsp;+&nbsp;1&nbsp;+&nbsp;2&nbsp;+&nbsp;3&nbsp;+&nbsp;4)</span></span></span></div></pre>
+        <section class="slide-content"><h2 id="abstract-reducers">Abstract reducers</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Predicate, Mapper } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+<span class="hljs-keyword">import</span> { append } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-10'</span>
+
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> filterReducer = <span class="hljs-function">(<span class="hljs-params">predicate: Predicate</span>) =&gt;</span> &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">f: T[], value: T</span>) =&gt;</span>
+  predicate(value) ? append(value, f) : f
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> takeReducer = <span class="hljs-function">(<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt;</span> &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">t: T[], value: T</span>) =&gt;</span>
+  t.length &lt; n ? append(value, t) : t
+<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> mapReducer = &lt;T, U&gt;<span class="hljs-function">(<span class="hljs-params">mapper: Mapper&lt;T, U&gt;</span>) =&gt;</span> &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">m: U[], value: T</span>) =&gt;</span>
+  append(mapper(value), m)
 </code></pre>
 </section>
       </div>
@@ -684,8 +620,16 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-12">
         <div data-id="12" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="reduce-all-the-things-">Reduce all the things 😎</h2>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>append</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>value</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>a</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="support function ts"><span>push</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>a</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>filter</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>predicate</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>a</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>reduce</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>f</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>predicate</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>?</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>append</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>f</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>:</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>f</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span><span>]</span></span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>take</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>n</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>a</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>reduce</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>t</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="variable other object ts"><span>t</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="support variable property ts"><span>length</span></span><span>&nbsp;</span><span class="keyword operator relational ts"><span>&lt;</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>n</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>?</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>append</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>t</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>:</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>t</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span><span>]</span></span></span><span class="meta brace round ts"><span>)</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>map</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>mapper</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>a</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>a</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>reduce</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta arrow ts"><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>m</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>append</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>mapper</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>m</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span><span>]</span></span></span><span class="meta brace round ts"><span>)</span></span></span></span></div></pre>
+        <section class="slide-content"><pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, compose, propEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>
+<span class="hljs-keyword">import</span> { summarize } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-6'</span>
+<span class="hljs-keyword">import</span> { filterReducer, takeReducer, mapReducer } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-11'</span>
+
+<span class="hljs-keyword">const</span> userExerpts = <span class="hljs-function">(<span class="hljs-params">userId: <span class="hljs-built_in">string</span>, n: <span class="hljs-built_in">number</span></span>) =&gt;</span> (posts: Post[]) =&gt; posts
+.reduce(compose( <span class="hljs-comment">// oh, rxjs pipe ;)</span>
+  filterReducer(propEq({ userId })),
+  takeReducer(n),
+  mapReducer(summarize),
+), [])
 </code></pre>
 </section>
       </div>
@@ -693,25 +637,129 @@ compose transformations <br>without awareness of input <br>nor creation of inter
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-13">
         <div data-id="13" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="abstract-reducers">Abstract reducers</h2>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>filterReducer</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>predicate</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>f</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>predicate</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>?</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>append</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>f</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>:</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>f</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>takeReducer</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>n</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>t</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="variable other object ts"><span>t</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="support variable property ts"><span>length</span></span><span>&nbsp;</span><span class="keyword operator relational ts"><span>&lt;</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>n</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>?</span></span><span>&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>append</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>t</span></span><span class="meta brace round ts"><span>)</span></span><span>&nbsp;</span><span class="keyword operator ternary ts"><span>:</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>t</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>mapReducer</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>mapper</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>m</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>value</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>append</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>mapper</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>value</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>m</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div></pre>
+        <section class="slide-content"><pre><code class="lang-typescript"><span class="hljs-keyword">const</span> transduce = <span class="hljs-function">(<span class="hljs-params">input, init, reducers</span>) =&gt;</span>
+  input.reduce(compose(...reducers), init)
 </code></pre>
-</section>
+<script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/min/vs/loader.js"></script>
+<script>
+  require.config({ paths: {
+    vs: 'https://unpkg.com/monaco-editor-core@0.12.0/min/vs',
+    'vs/language/typescript': 'https://unpkg.com/monaco-typescript@3.1.0/release/min',
+  }})
+  // https://github.com/Microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md#option-1-use-a-data-worker-uri
+  window.MonacoEnvironment = {
+    getWorkerUrl(workerId, label) {
+      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+        self.MonacoEnvironment = {
+          baseUrl: 'https://unpkg.com/monaco-editor-core@0.12.0/min/',
+          getWorkerUrl(moduleId, label) {
+            if (label === 'typescript' || label === 'javascript')
+              return 'https://unpkg.com/monaco-typescript@3.1.0/release/min/tsWorker.js'
+          }
+        }
+        importScripts('https://unpkg.com/monaco-editor-core@0.12.0/min/vs/base/worker/workerMain.js')`
+      )}`
+    }
+  }
+  require([
+    'vs/editor/editor.main',
+    'theme/editor/editor'
+  ], ({ editor, languages, Uri }, { iniEditor }) => {
+    require([
+      'vs/language/typescript/monaco.contribution',
+    ], async () => {
+      languages.typescript.typescriptDefaults.setDiagnosticsOptions({
+        noSemanticValidation: true,
+        noSyntaxValidation: false,
+      })
+      languages.typescript.typescriptDefaults.setCompilerOptions({
+        target: languages.typescript.ScriptTarget.ES2018,
+        allowNonTsExtensions: true,
+        moduleResolution: languages.typescript.ModuleResolutionKind.NodeJs,
+        module: languages.typescript.ModuleKind.CommonJS,
+        noEmit: true,
+        typeRoots: ['node_modules/@types'],
+      })
+      languages.typescript.typescriptDefaults.addExtraLib(
+        await (await fetch('https://unpkg.com/@types/ramda@0.25.40/index.d.ts')).text(),
+        'node_modules/@types/ramda/index.d.ts',
+      )
+      languages.typescript.typescriptDefaults.addExtraLib(
+        await (await fetch('https://unpkg.com/@types/lodash@4.14.117/fp.d.ts')).text(),
+        'node_modules/@types/lodash/fp.d.ts',
+      )
+      languages.typescript.typescriptDefaults.addExtraLib(`
+export class Post {
+    id: string
+    userId: number
+    date: Date
+    title: string
+    body: string
+    categories: string[]
+    comments: {
+        userId: string
+        comment: string
+    }[]
+}
+export type Summary = Pick<Post, 'title'|'body'>
+
+export interface Predicate {
+    (a: any): boolean
+}
+
+export interface Mapper<T = any, U = T> {
+    (a: T): U
+}
+
+export interface Reducer {
+    (accumulator: any[], value: any): any[]
+}
+
+import { over, lensProp } from 'ramda'
+export const update = <U = any, V = U>(prop: string, fn: Mapper<U, V>) => over(lensProp(prop), fn)
+
+export { all, any, compose, curry, map, pick, replace, take, whereEq } from 'ramda'
+
+declare const assert = console.assert
+`,
+        'node_modules/demo/index.d.ts',
+      )
+      const nodes = document.querySelectorAll('.slide pre')
+      nodes.forEach((node, index) => {
+          const { width, height } = node.getBoundingClientRect()
+          node.style.width = `${width}px`
+          node.style.height = `${height}px`
+          const code = node.textContent
+          node.innerHTML = ''
+          const slide = node.closest('.slide').id
+          const model = editor.createModel(code, 'typescript', `node_modules/${slide}/index.ts`)
+          console.log(slide, node, width, height, model, code)
+          node.editor = editor.create(node, {
+            model,
+            language: 'typescript',
+            minimap: { enabled: false },
+            theme: 'vs-dark',
+            renderLineHighlight: 'none',
+            lineNumbersMinChars: 2,
+            fontSize: 25,
+            contextmenu: false,
+            fontFamily: 'Inconsolata, monospace',
+            wordWrap: 'on',
+            scrollbar: { verticalScrollbarSize: 0 }
+          })
+      })
+      // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
+      languages.typescript.getTypeScriptWorker()
+        .then(() => iniEditor({ editor, languages }) )
+      return nodes
+    })
+  })
+</script></section>
       </div>
     </div>
     <div class="slide-wrapper">
-      <div class="slide hidden" id="slide-14">
+      <div class="slide hidden author-slide" id="slide-14">
         <div data-id="14" class="slide-overlay"></div>
-        <section class="slide-content"><pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>userExerpts</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>userId</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>n</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>posts</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span></span><span class="storage type function arrow ts"><span>=&gt;</span></span><span>&nbsp;</span></span><span class="variable other readwrite ts"><span>posts</span></span></span></span></div><div class="line"><span class="source ts"><span class="meta function-call ts"><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>reduce</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>compose</span></span></span><span class="meta brace round ts"><span>(</span></span><span>&nbsp;</span><span class="comment line double-slash ts"><span class="punctuation definition comment ts"><span>//</span></span><span>&nbsp;oh,&nbsp;rxjs&nbsp;pipe&nbsp;;)</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>filterReducer</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>matches</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta objectliteral ts"><span class="punctuation definition block ts"><span>{</span></span><span>&nbsp;</span><span class="meta object member ts"><span class="variable other readwrite ts"><span>userId</span></span><span>&nbsp;</span></span><span class="punctuation definition block ts"><span>}</span></span></span><span class="meta brace round ts"><span>)</span><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>takeReducer</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>n</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span></span></div><div class="line"><span class="source ts"><span>&nbsp;&nbsp;</span><span class="meta function-call ts"><span class="entity name function ts"><span>mapReducer</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="variable other readwrite ts"><span>summarize</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span></span></div><div class="line"><span class="source ts"><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="meta array literal ts"><span class="meta brace square ts"><span>[</span><span>]</span></span></span><span class="meta brace round ts"><span>)</span></span></span></div></pre>
-</code></pre>
-<pre><code class="lang-typescript"><pre class="editor editor-colors"><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="storage type ts"><span>const</span></span><span>&nbsp;</span><span class="meta var-single-variable expr ts"><span class="meta definition variable ts entity name function ts"><span>transduce</span></span><span>&nbsp;</span></span><span class="keyword operator assignment ts"><span>=</span></span><span class="meta arrow ts"><span>&nbsp;</span><span class="meta parameters ts"><span class="punctuation definition parameters begin ts"><span>(</span></span><span class="variable parameter ts"><span>input</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>init</span></span><span class="punctuation separator parameter ts"><span>,</span></span><span>&nbsp;</span><span class="variable parameter ts"><span>reducers</span></span><span class="punctuation definition parameters end ts"><span>)</span></span></span><span>&nbsp;</span><span class="storage type function arrow ts"><span>=&gt;</span></span></span></span></span></div><div class="line"><span class="source ts"><span class="meta var expr ts"><span class="meta arrow ts"><span>&nbsp;&nbsp;</span></span><span class="meta function-call ts"><span class="variable other object ts"><span>input</span></span><span class="punctuation accessor ts"><span>.</span></span><span class="entity name function ts"><span>reduce</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="meta function-call ts"><span class="entity name function ts"><span>compose</span></span></span><span class="meta brace round ts"><span>(</span></span><span class="keyword operator spread ts"><span>...</span></span><span class="variable other readwrite ts"><span>reducers</span></span><span class="meta brace round ts"><span>)</span></span><span class="punctuation separator comma ts"><span>,</span></span><span>&nbsp;</span><span class="variable other readwrite ts"><span>init</span></span><span class="meta brace round ts"><span>)</span></span></span></span></div></pre>
-</code></pre>
-</section>
-      </div>
-    </div>
-    <div class="slide-wrapper">
-      <div class="slide hidden author-slide" id="slide-15">
-        <div data-id="15" class="slide-overlay"></div>
         <section class="slide-content"><div class="author">
   <h1 class="name">I&#39;m Adrien, frontend developer</h1>
     <h3 class="email">
@@ -725,6 +773,7 @@ compose transformations <br>without awareness of input <br>nor creation of inter
 
 
 
+    <script async src="http://localhost:35729/livereload.js"></script>
 
   <script type="text/javascript">
     /**
@@ -865,24 +914,11 @@ const initPresenterText = (selector) => {
   })
 }
 
-const initEditor = (selector) => {
-  document.querySelectorAll(selector).forEach(node => {
-    node.setAttribute('contenteditable', true)
-    node.setAttribute('spellcheck', false)
-    node.addEventListener('input', event => {
-
-    })
-    node.addEventListener('keydown', event => event.stopPropagation())
-  })
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   // Update the tabindex to prevent weird slide transitioning
   updateTabIndex()
 
-  initPresenterText('script[type="presenter/text"]')
-
-  initEditor('.editor')
+  // initPresenterText('script[type="presenter/text"]')
 
   // If the location hash specifies a page number, go to it.
   var page = window.location.hash.slice(1)
@@ -954,7 +990,7 @@ function toggleOverview() {
       y = w.innerHeight || e.clientHeight || g.clientHeight
 
     w.$style = d.createElement('style')
-    w.$style.innerHTML = '.slide-wrapper {width: ' + (x * 0.25) + 'px; height: ' + (y * 0.25) + 'px; } body .slide {width: ' + x + 'px; height: ' + y + 'px; position: relative; transform: scale(0.25,0.25); transform-origin: 0 0; } .slide.hidden{display: block; }'
+    w.$style.innerHTML = '.slide-wrapper {width: ' + (x * 0.25) + 'px; height: ' + (y * 0.25) + 'px; } body .slide {width: ' + x + 'px; height: ' + y + 'px; position: relative; transform: scale(0.25,0.25); transform-origin: 0 0; } .slide.hidden{visibility: visible }'
     d.getElementsByTagName('head')[0].appendChild(w.$style)
   }
 }

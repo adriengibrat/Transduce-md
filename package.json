@@ -1,17 +1,29 @@
 {
-  "name": "Transduce.md",
+  "name": "Transduce-md",
   "version": "0.1.0",
   "description": "",
   "scripts": {
     "start": "cleaver watch README.md",
     "build": "cleaver README.md",
-    "//": "Don't use the ugly hack below in real life ;)",
-    "postinstall": "git reset -- node_modules/cleaver/lib/index.js"
+    "build:editor": "webpack --config webpack.config.js"
   },
   "author": "Adrien Gibrat <a.gibrat@oodrive.com>",
   "license": "MIT",
   "devDependencies": {
-    "cleaver": "0.8.7",
-    "highlights": "3.1.1"
+    "@types/ramda": "github:types/npm-ramda#dist",
+    "cleaver": "^0.8.7",
+    "css-loader": "^1.0.0",
+    "monaco-editor": "^0.14.3",
+    "monaco-editor-textmate": "^2.0.0",
+    "monaco-editor-webpack-plugin": "^1.5.4",
+    "monaco-textmate": "^3.0.0",
+    "monaco-textmate-languages": "^1.1.0",
+    "onigasm": "^2.2.1",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.23.1",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "typescript": "^3.1.5"
   }
 }

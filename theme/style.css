@@ -96,31 +96,6 @@ body {
   overflow: hidden;
 }
 
-.slide-content svg[id^=mermaid] {
-  margin: auto;
-  display: block;
-  max-height: 60vh;
-}
-
-svg[id^=mermaid] .cluster rect {
-  fill: white!important;
-  stroke: #F5D380!important;
-}
-svg[id^=mermaid] .cluster text {
-  transform: translateY(.5em);
-  stroke: #00A69F;
-}
-svg[id^=mermaid] .node rect {
-  stroke: none;
-}
-svg[id^=mermaid] span.edgeLabel {
-  color: #333;
-}
-svg[id^=mermaid] span.edgeLabel:not(:empty) {
-  padding: 0 .3em;
-}
-
-
 .controls {
   position: absolute;
   bottom: 10px;
@@ -129,7 +104,6 @@ svg[id^=mermaid] span.edgeLabel:not(:empty) {
 }
 
 .controls .overview {
-  display: inline-block;
   float: left;
   color: #C7C7C7;
   margin-right: 15px;
@@ -300,121 +274,28 @@ table th {
           transition: width .15s ease-out;
 }
 
-.hidden,
-.slide-content svg[id^=mermaid].hidden {
-  display: none;
+.hidden {
+  visibility: hidden;
 }
 
-/* Code Highlighting */
-
-.editor .wrap-guide {
-  background: rgba(255, 255, 255, 0.1);
-}
-.editor .indent-guide {
-  color: rgba(255, 255, 255, 0.15);
-}
-.editor,
-.editor .gutter {
-  background-color: #282828;
-  color: #F8F8F2;
-}
-.editor.is-focused .cursor {
-  border-color: #F8F8F0;
-}
-.editor.is-focused .selection .region {
-  background-color: #49483E;
-}
-.editor.is-focused .line-number.cursor-line-no-selection {
-  background-color: #49483E;
-}
-.editor .invisible-character {
-  color: rgba(215, 215, 215, 0.15);
-}
-.editor .comment {
-  color: #75715E;
-}
-.editor .string {
-  color: #E6DB74;
-}
-.editor .constant.numeric {
-  color: #AE81FF;
-}
-.editor .constant.language {
-  color: #AE81FF;
-}
-.editor .constant.character,
-.editor .constant.other {
-  color: #AE81FF;
-}
-.editor .keyword {
-  color: #F92672;
-}
-.editor .storage {
-  color: #F92672;
-}
-.editor .storage.type {
-  font-style: italic;
-  color: #66D9EF;
-}
-.editor .entity.name.class {
-  text-decoration: underline;
-  color: #A6E22E;
-}
-.editor .entity.other.inherited-class {
-  font-style: italic;
-  text-decoration: underline;
-  color: #A6E22E;
-}
-.editor .entity.name.function {
-  color: #A6E22E;
-}
-.editor .entity.name.instance {
-  color: #66D9EF;
-}
-.editor .variable.parameter {
-  font-style: italic;
-  color: #FD971F;
-}
-.editor .entity.name.tag {
-  color: #F92672;
-}
-.editor .entity.other.attribute-name {
-  color: #A6E22E;
-}
-.editor .support.function {
-  color: #66D9EF;
-}
-.editor .support.constant {
-  color: #66D9EF;
-}
-.editor .support.type,
-.editor .support.class {
-  font-style: italic;
-  color: #66D9EF;
-}
-.editor .invalid {
-  color: #F8F8F0;
-  background-color: #F92672;
-}
-.editor .invalid.deprecated {
-  color: #F8F8F0;
-  background-color: #AE81FF;
-}
-.editor .class.jade {
-  color: #AE81FF;
-}
-pre {
-  white-space: normal;
-}
-code pre {
+code {
   display: block;
-  margin: 1rem 0;
-  padding: 1rem;
-  font-family: 'Inconsolata';
-  font-weight: 400;
-  overflow: hidden;
-  font-size: 2rem;
-  white-space: pre;
+  overflow-x: auto;
+  padding-left: 51px;
+  font-family: 'Inconsolata', monospace;
+  font-size: 25px;
+  background-color:#1e1e1e;
+  color: #d4d4D4;
+}
+.monaco-editor .monaco-editor-hover-content .hover-row {
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 28px;
+  white-space: pre-wrap;
+  word-break: keep-all;
+}
+.monaco-editor .monaco-editor-hover .monaco-editor-hover-content {
+  max-width: 80vw;
 }
 
 /* Responsiveness */

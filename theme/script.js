@@ -136,24 +136,11 @@ const initPresenterText = (selector) => {
   })
 }
 
-const initEditor = (selector) => {
-  document.querySelectorAll(selector).forEach(node => {
-    node.setAttribute('contenteditable', true)
-    node.setAttribute('spellcheck', false)
-    node.addEventListener('input', event => {
-
-    })
-    node.addEventListener('keydown', event => event.stopPropagation())
-  })
-}
-
 document.addEventListener('DOMContentLoaded', () => {
   // Update the tabindex to prevent weird slide transitioning
   updateTabIndex()
 
-  initPresenterText('script[type="presenter/text"]')
-
-  initEditor('.editor')
+  // initPresenterText('script[type="presenter/text"]')
 
   // If the location hash specifies a page number, go to it.
   var page = window.location.hash.slice(1)
@@ -225,7 +212,7 @@ function toggleOverview() {
       y = w.innerHeight || e.clientHeight || g.clientHeight
 
     w.$style = d.createElement('style')
-    w.$style.innerHTML = '.slide-wrapper {width: ' + (x * 0.25) + 'px; height: ' + (y * 0.25) + 'px; } body .slide {width: ' + x + 'px; height: ' + y + 'px; position: relative; transform: scale(0.25,0.25); transform-origin: 0 0; } .slide.hidden{display: block; }'
+    w.$style.innerHTML = '.slide-wrapper {width: ' + (x * 0.25) + 'px; height: ' + (y * 0.25) + 'px; } body .slide {width: ' + x + 'px; height: ' + y + 'px; position: relative; transform: scale(0.25,0.25); transform-origin: 0 0; } .slide.hidden{visibility: visible }'
     d.getElementsByTagName('head')[0].appendChild(w.$style)
   }
 }
