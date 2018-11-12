@@ -1,6 +1,6 @@
 title: Transducers, powerful abstractions
 author:
-  name: I'm Adrien, frontend developer
+  name: I'model Adrien, frontend developer
   email: a.gibrat@oodrive.com
 theme: ./theme
 controls: false
@@ -32,7 +32,7 @@ compose transformations <br>without awareness of input <br>nor creation of inter
 > <dfn title="Function that takes one or more functions as arguments / returns a function">[Higher-order function](https://www.youtube.com/watch?v=BMUiFMZr7vk)</dfn> that transform <br><dfn title="Function with exactly n arguments">[n-ary function](https://xlinux.nist.gov/dads/HTML/naryfunc.html)</dfn> to a chain of *n* <dfn title="Function that takes one argument">[unary function](https://xlinux.nist.gov/dads/HTML/unaryfunc.html)</dfn>
 
 ```typescript
-import { curry } from 'ramda'
+import { curry, assert } from 'demo'
 const fn = (a: number, b: number, c: number) => a + b + c
 const result = curry(fn)(1)(2)(3) // 6
 assert(curry(fn)(1, 2)(3) === curry(fn)(1)(2, 3), 'pragmatic curry ;)')
@@ -92,11 +92,11 @@ export const exerpts = (posts: Post[]) => map(summarize, posts)
 <big style="color: red">❌</big> Loop 2&times;, allocates 3 new array
 
 ```typescript
-import { Post, propEq } from 'demo'
+import { Post, whereEq } from 'demo'
 import { summarize } from 'slide-6'
 
 const userExerpts = (userId: string, n: number) => (posts: Post[]) => posts
-  .filter(propEq('userId', userId))
+  .filter(whereEq({ userId }))
   .slice(0, n)
   .map(summarize)
 export const exerpts = userExerpts('me', 20)
@@ -109,12 +109,12 @@ export const exerpts = userExerpts('me', 20)
 <big style="color: green">✔</big> Useful with filter, every, some, find...
 
 ```typescript
-import { Predicate, all, any, propEq } from 'demo'
+import { Post, Predicate, all, any, whereEq } from 'demo'
 
-export const pass = (logic: typeof all | typeof any, predicates: Predicate[]) => 
-  (value) => logic(predicate => predicate(value), predicates)
+export const pass = <T>(logic: typeof all | typeof any, predicates: Predicate<T>[]) => 
+  (value: T) => logic(predicate => predicate(value), predicates)
 export const first = (n: number) => () => n-- > 0
-const filter = pass(all, [propEq('userId', 'me'), first(20)])
+const filter = pass<Post>(all, [whereEq({ userId:'me' }), first(20)])
 ```
 
 --
@@ -123,13 +123,12 @@ const filter = pass(all, [propEq('userId', 'me'), first(20)])
 <big style="color: red">❌</big> Loop 2&times;, allocates 2 new array
 
 ```typescript
-
-import { Post, all, propEq } from 'demo'
+import { Post, all, whereEq } from 'demo'
 import { summarize } from 'slide-6'
 import { pass, first } from 'slide-8'
 
 const userExerpts = (userId, n) => (posts: Post[]) => posts
-  .filter(pass(all, [propEq({ userId }), first(n)]))
+  .filter(pass(all, [whereEq({ userId }), first(n)]))
   .map(summarize)
 export const exerpts = userExerpts('me', 20)
 ```
@@ -138,49 +137,55 @@ export const exerpts = userExerpts('me', 20)
 
 ## Reduce all the things 😎
 
-<big style="color: blue">‼</big> Implement all iteration operation with 'reduce'
+<big style="color: blue">‼</big> Implement all iteration operations with 'reduce'
 
 ```typescript
 import { Predicate, Mapper } from 'demo'
 
 export const append = <T>(value: T, a: T[]) => (a.push(value), a)
-const filter = <T>(predicate: Predicate, a: T[]) => a.reduce<T[]>((f, value) =>
-  predicate(value) ? append(value, f) : f, [])
-const take = <T>(n: number, a: T[]) => a.reduce<T[]>((t, value) =>
-  t.length < n ? append(value, t) : t, [])
-const map = <T, U>(mapper: Mapper<T, U>, a: T[]) => a.reduce<U[]>((m, value) =>
-  append(mapper(value), m), [])
+const filter = <T>(predicate: Predicate<T>, a: T[]) =>
+  a.reduce<T[]>((f, value) => predicate(value) ? append(value, f) : f, [])
+const take = <T>(n: number, a: T[]) =>
+  a.reduce<T[]>((taken, value) => t.length < n ? append(value, taken) : taken, [])
+const map = <T, U>(mapper: Mapper<T, U>, a: T[]) =>
+  a.reduce<U[]>((mapped, value) => append(mapper(value), mapped), [])
 ```
 
 --
 
-## Abstract reducers
+## Abstract reducers 😔
+
+<big style="color: blue">‼</big> Reducer factories
 
 ```typescript
 import { Predicate, Mapper } from 'demo'
 import { append } from 'slide-10'
 
-export const filterReducer = (predicate: Predicate) => <T>(f: T[], value: T) =>
-  predicate(value) ? append(value, f) : f
-export const takeReducer = (n: number) => <T>(t: T[], value: T) =>
-  t.length < n ? append(value, t) : t
-export const mapReducer = <T, U>(mapper: Mapper<T, U>) => <T>(m: U[], value: T) =>
-  append(mapper(value), m)
+export const filterReducer = <T>(predicate: Predicate<T>) =>
+  (filtered: T[], value: T) => predicate(value) ? append(value, filtered) : filtered
+export const takeReducer = <T>(n: number) =>
+  (taken: T[], value: T) => t.length < n ? append(value, taken) : taken
+export const mapReducer = <T, U>(mapper: Mapper<T, U>) =>
+  (mapped: U[], value: T) => append(mapper(value), mapped)
 ```
 
 --
+## Compose reducers 😲
+
+<big style="color: green">✔</big> oh, rxjs pipe ;)
 
 ```typescript
-import { Post, compose, propEq } from 'demo'
+import { Post, Summary, compose, whereEq } from 'demo'
 import { summarize } from 'slide-6'
 import { filterReducer, takeReducer, mapReducer } from 'slide-11'
 
 const userExerpts = (userId: string, n: number) => (posts: Post[]) => posts
-.reduce(compose( // oh, rxjs pipe ;)
-  filterReducer(propEq({ userId })),
-  takeReducer(n),
-  mapReducer(summarize),
-), [])
+.reduce<Summary[]>(
+  a = compose<Post, Summary, Summary, Summary>(
+    filterReducer<Summary>(whereEq({ userId })),
+    takeReducer<Summary>(n),
+    mapReducer<Post, Summary>(summarize),
+  ), [])
 ```
 
 --
@@ -190,7 +195,7 @@ const transduce = (input, init, reducers) =>
   input.reduce(compose(...reducers), init)
 ```
 
-<script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/min/vs/loader.js"></script>
+<script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/dev/vs/loader.js"></script>
 <script>
   require.config({ paths: {
     vs: 'https://unpkg.com/monaco-editor-core@0.12.0/min/vs',
@@ -217,65 +222,42 @@ const transduce = (input, init, reducers) =>
   ], ({ editor, languages, Uri }, { iniEditor }) => {
     require([
       'vs/language/typescript/monaco.contribution',
-    ], async () => {
-      languages.typescript.typescriptDefaults.setDiagnosticsOptions({
-        noSemanticValidation: true,
-        noSyntaxValidation: false,
-      })
-      languages.typescript.typescriptDefaults.setCompilerOptions({
-        target: languages.typescript.ScriptTarget.ES2018,
-        allowNonTsExtensions: true,
-        moduleResolution: languages.typescript.ModuleResolutionKind.NodeJs,
-        module: languages.typescript.ModuleKind.CommonJS,
-        noEmit: true,
-        typeRoots: ['node_modules/@types'],
-      })
-      languages.typescript.typescriptDefaults.addExtraLib(
-        await (await fetch('https://unpkg.com/@types/ramda@0.25.40/index.d.ts')).text(),
-        'node_modules/@types/ramda/index.d.ts',
-      )
-      languages.typescript.typescriptDefaults.addExtraLib(
-        await (await fetch('https://unpkg.com/@types/lodash@4.14.117/fp.d.ts')).text(),
-        'node_modules/@types/lodash/fp.d.ts',
-      )
-      languages.typescript.typescriptDefaults.addExtraLib(`
-export class Post {
-    id: string
-    userId: number
-    date: Date
-    title: string
-    body: string
-    categories: string[]
-    comments: {
-        userId: string
-        comment: string
-    }[]
-}
-export type Summary = Pick<Post, 'title'|'body'>
-
-export interface Predicate {
-    (a: any): boolean
-}
-
-export interface Mapper<T = any, U = T> {
-    (a: T): U
-}
-
-export interface Reducer {
-    (accumulator: any[], value: any): any[]
-}
-
-import { over, lensProp } from 'ramda'
-export const update = <U = any, V = U>(prop: string, fn: Mapper<U, V>) => over(lensProp(prop), fn)
-
-export { all, any, compose, curry, map, pick, replace, take, whereEq } from 'ramda'
-
-declare const assert = console.assert
-`,
-        'node_modules/demo/index.d.ts',
-      )
-      const nodes = document.querySelectorAll('.slide pre')
-      nodes.forEach((node, index) => {
+      'https://unpkg.com/ramda@0.25.0/dist/ramda.min.js'
+    ], (_, ramda) => {
+      const src = (uri) => fetch(uri).then(response => response.text())
+      Promise.all([
+        src('https://unpkg.com/@types/ramda@0.25.40/index.d.ts'),
+        src('index.ts'),
+      ])
+      .then(([ramdaTypes, demo]) => {
+        const { typescript } = languages
+        typescript.typescriptDefaults.setDiagnosticsOptions({
+          noSemanticValidation: false,
+          noSyntaxValidation: false,
+        })
+        typescript.typescriptDefaults.setCompilerOptions({
+          target: typescript.ScriptTarget.ES2018,
+          moduleResolution: typescript.ModuleResolutionKind.NodeJs,
+          module: typescript.ModuleKind.Classic,
+          typeRoots: ['node_modules/@types'],
+        })
+        typescript.typescriptDefaults.addExtraLib(
+          ramdaTypes,
+          'node_modules/@types/ramda/index.d.ts',
+        )
+        typescript.typescriptDefaults.addExtraLib(
+          demo,
+          'node_modules/demo/index.d.ts',
+        )
+        const nodes = document.querySelectorAll('.slide pre')
+        // const libs = [{
+        //   uri: 'node_modules/ramda/index.ts',
+        //   factory: () => eval(ramda),
+        // }]
+        const models = [
+          // editor.createModel(demo, 'typescript', 'node_modules/demo/index.ts'),
+        ]
+        nodes.forEach((node, index) => {
           const { width, height } = node.getBoundingClientRect()
           node.style.width = `${width}px`
           node.style.height = `${height}px`
@@ -283,9 +265,10 @@ declare const assert = console.assert
           node.innerHTML = ''
           const slide = node.closest('.slide').id
           const model = editor.createModel(code, 'typescript', `node_modules/${slide}/index.ts`)
-          console.log(slide, node, width, height, model, code)
-          node.editor = editor.create(node, {
+          models.push(model)
+          editor.create(node, {
             model,
+            readOnly: true,
             language: 'typescript',
             minimap: { enabled: false },
             theme: 'vs-dark',
@@ -297,11 +280,48 @@ declare const assert = console.assert
             wordWrap: 'on',
             scrollbar: { verticalScrollbarSize: 0 }
           })
+        })
+        // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
+        typescript.getTypeScriptWorker()
+          .then(() => iniEditor({ editor, languages }) )
+/*
+        function transpile(model) {
+          console.log('transpile', model.uri)
+          return this(model.uri)
+            .then((client) => client.getEmitOutput(model.uri))
+            .then(({ outputFiles }) => ({
+              uri: model.uri,
+              factory: new Function('require, exports', `${outputFiles[0].text}`)
+            }))
+        }
+        typescript.getTypeScriptWorker()
+          .then(worker => Promise.all(libs.concat(models.map(transpile, worker)))
+            .then(modules => {
+              const factories = modules
+                .reduce((m, { uri, factory }) => ((m[uri] = factory), m), {})
+              
+              console.log('factories', factories, modules)
+              const load = (factories) => {
+                require.reset()
+                Object.entries(factories)
+                .forEach(([uri, factory]) => {
+                  const name = uri.replace(/node_modules\/(.*?)\/index\.ts/, '$1')
+                  define(name, ['require', 'exports'], factory)
+                  console.log('define', name, factory)
+                })
+              }
+              load(factories)
+              models.forEach(model => model.onDidChangeContent(() => {
+                const { uri, factory } = transpile.call(worker, model)
+                factories[uri] = factory
+                load(factories)
+                console.log('change')
+              }))
+              console.log('ready')
+            })
+          )
+//*/
       })
-      // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
-      languages.typescript.getTypeScriptWorker()
-        .then(() => iniEditor({ editor, languages }) )
-      return nodes
     })
   })
 </script>

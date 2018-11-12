@@ -1,6 +1,6 @@
 module.exports = {
 	entry: './editor.js',
-	mode: 'development',
+	mode: 'production',
 	output: {
 		path: `${__dirname}/theme/editor`,
 		library: 'init',
