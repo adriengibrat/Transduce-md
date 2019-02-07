@@ -2,9 +2,9 @@ import { lensProp, over } from 'ramda'
 
 export const update = <U = any, V = U>(prop: string, fn: Mapper<U, V>) => over(lensProp(prop), fn)
 
-export { all, any, compose, curry, map, pick, replace, take, whereEq } from 'ramda'
+export { all as every, any as some, compose, pipe, curry, map, pick, replace, reduce, take, whereEq } from 'ramda'
 
-export class Post {
+export interface Post {
   id: string
   userId: number
   date: Date
@@ -16,7 +16,6 @@ export class Post {
       comment: string
   }[]
 }
-export type Summary = Pick<Post, 'title'|'body'>
 
 export interface Predicate<T = any> {
   (a: T): boolean

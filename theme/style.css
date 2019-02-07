@@ -283,7 +283,7 @@ code {
   overflow-x: auto;
   padding-left: 51px;
   font-family: 'Inconsolata', monospace;
-  font-size: 25px;
+  font-size: 40px;
   background-color:#1e1e1e;
   color: #d4d4D4;
 }
@@ -412,11 +412,14 @@ code {
   background-repeat: no-repeat;
   background-size: 100%;
   background-origin: padding-box;
-  background-image: url(theme/img/footer.png);
+  background-image: url(theme/img/footer.jpg);
 }
 
 #slide-1 h1 {
   color: #00A69F;
+}
+#slide-1 img {
+  width: 35vw;
 }
 #slide-1 h2 {
   color: #333;
