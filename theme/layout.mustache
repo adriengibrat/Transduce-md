@@ -15,8 +15,111 @@
     <script async src="http://localhost:35729/livereload.js"></script>
   {{/options.watch}}
 
+  <script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/dev/vs/loader.js"></script>
+  <script>
+    require.config({ paths: {
+      vs: 'https://unpkg.com/monaco-editor-core@0.12.0/min/vs',
+      'vs/language/typescript': 'https://unpkg.com/monaco-typescript@3.1.0/release/min',
+    }})
+    // https://github.com/Microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md#option-1-use-a-data-worker-uri
+    window.MonacoEnvironment = {
+      getWorkerUrl(workerId, label) {
+        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+          self.MonacoEnvironment = {
+            baseUrl: 'https://unpkg.com/monaco-editor-core@0.12.0/min/',
+            getWorkerUrl(moduleId, label) {
+              if (label === 'typescript' || label === 'javascript')
+                return 'https://unpkg.com/monaco-typescript@3.1.0/release/min/tsWorker.js'
+            }
+          }
+          importScripts('https://unpkg.com/monaco-editor-core@0.12.0/min/vs/base/worker/workerMain.js')`
+        )}`
+      }
+    }
+    require([
+      'vs/editor/editor.main',
+      'theme/editor/editor'
+    ], ({ editor, languages, Uri }, { iniEditor }) => {
+      require([
+        'vs/language/typescript/monaco.contribution',
+        'https://unpkg.com/ramda@0.25.0/dist/ramda.min.js'
+      ], (_, ramda) => {
+        const src = (uri) => fetch(uri).then(response => response.text())
+        Promise.all([
+          src('https://unpkg.com/@types/ramda@0.25.40/index.d.ts'),
+          src('slides.ts'),
+        ])
+        .then(([ramdaTypes, slides]) => {
+          const { typescript } = languages
+          typescript.typescriptDefaults.setDiagnosticsOptions({
+            noSemanticValidation: false,
+            noSyntaxValidation: false,
+          })
+          typescript.typescriptDefaults.setCompilerOptions({
+            target: typescript.ScriptTarget.ES2018,
+            moduleResolution: typescript.ModuleResolutionKind.NodeJs,
+            module: typescript.ModuleKind.Classic,
+            typeRoots: ['node_modules/@types'],
+          })
+          typescript.typescriptDefaults.addExtraLib(
+            ramdaTypes,
+            'node_modules/@types/ramda/index.d.ts',
+          )
+          typescript.typescriptDefaults.addExtraLib(
+            slides,
+            'node_modules/slides/index.d.ts',
+          )
+          const nodes = document.querySelectorAll('.slide pre')
+          nodes.forEach((node, index) => {
+            const { width, height } = node.getBoundingClientRect()
+            node.style.width = `${width}px`
+            node.style.height = `${height}px`
+            const code = node.textContent.trim()
+            node.innerHTML = ''
+            const slide = node.closest('.slide').id
+            const model = editor.createModel(code, 'typescript', `node_modules/${slide}/index.ts`)
+            editor.create(node, {
+              model,
+              // readOnly: true,
+              automaticLayout: true,
+              language: 'typescript',
+              minimap: { enabled: false },
+              theme: 'vs-dark',
+              renderLineHighlight: 'none',
+              lineNumbersMinChars: 2,
+              fontSize: 40,
+              contextmenu: false,
+              fontFamily: 'Inconsolata, monospace',
+              wordWrap: 'on',
+              scrollbar: { verticalScrollbarSize: 0 },
+              scrollBeyondLastLine: false
+            })
+            const LINE_HEIGHT = 54
+            const CONTAINER_GUTTER = 0
+            const codeContainer = node.getElementsByClassName('view-lines')[0]
+            let prevLineCount = 0
+            model.onDidChangeContent(() => setTimeout(() => {
+                const height =
+                  codeContainer.childElementCount > prevLineCount
+                    ? codeContainer.offsetHeight // unfold
+                    : codeContainer.childElementCount * LINE_HEIGHT + CONTAINER_GUTTER; // fold
+                prevLineCount = codeContainer.childElementCount
+                // console.log(node, editor, height)
+                node.style.height = height + 'px'
+                editor.layout()
+              }, 0))
+          })
+          // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
+          typescript.getTypeScriptWorker()
+            .then(() => iniEditor({ editor, languages }))
+        })
+      })
+    })
+  </script>
+
   <script type="text/javascript">
     {{{script}}}
   </script>
+
 </body>
 </html>

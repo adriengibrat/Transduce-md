@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
-  <title>Transducers, powerful abstractions</title>
+  <title>Transducers, powerful abstraction</title>
   <style type="text/css">
     @font-face {
   font-family: 'Inconsolata';
@@ -456,8 +456,8 @@ cite {
       <div class="slide" id="slide-1">
         <div data-id="1" class="slide-overlay"></div>
         <section class="slide-content"><h1 id="transducers">Transducers</h1>
-<h2 id="powerful-abstractions">powerful abstractions</h2>
-<center><img src="theme/img/logo.jpg" alt="Oodrive"></center></section>
+<h2 id="powerful-abstraction">powerful abstraction</h2>
+</section>
       </div>
     </div>
     <div class="slide-wrapper">
@@ -468,40 +468,42 @@ cite {
 <p><cite><a href="https://clojure.org/reference/transducers">clojure.org</a></cite>
 compose transformations <br>without awareness of input <br>nor creation of intermediate aggregates</p>
 </blockquote>
-<p><small style="float:left;">in physics <em>convert energy to signal</em></small></p>
-<p><small style="float:right;margin-right:45px">in biology <em>transfer genetic material</em></small></p>
+<p><small>* You may use it often without noticing it</small></p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-3">
         <div data-id="3" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="foreword-curry-">Foreword, curry ♨</h2>
-<blockquote>
-<p><dfn title="Function that takes one or more functions as arguments / returns a function"><a href="https://www.youtube.com/watch?v=BMUiFMZr7vk">Higher-order function</a></dfn> that transform <br><dfn title="Function with exactly n arguments"><a href="https://xlinux.nist.gov/dads/HTML/naryfunc.html">n-ary function</a></dfn> to a chain of <em>n</em> <dfn title="Function that takes one argument"><a href="https://xlinux.nist.gov/dads/HTML/unaryfunc.html">unary function</a></dfn></p>
-</blockquote>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { curry, assert } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
+        <section class="slide-content"><h2 id="functional-programing-">Functional programing ♨</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> add = <span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> b =&gt; a + b; <span class="hljs-comment">// returns a function</span>
 
-<span class="hljs-keyword">const</span> sum3 = <span class="hljs-function">(<span class="hljs-params">a: <span class="hljs-built_in">number</span>, b: <span class="hljs-built_in">number</span>, c: <span class="hljs-built_in">number</span></span>) =&gt;</span> a + b + c;
-<span class="hljs-keyword">const</span> result = curry(sum3)(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>)(<span class="hljs-number">3</span>); <span class="hljs-comment">// 6</span>
-
-assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number">2</span>)(<span class="hljs-number">3</span>) === curry(sum3)(<span class="hljs-number">1</span>)(<span class="hljs-number">2</span>, <span class="hljs-number">3</span>), <span class="hljs-string">'pragmatic curry'</span>);
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(add(<span class="hljs-number">1</span>))
+  .filter(<span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> !!(a % <span class="hljs-number">2</span>)) <span class="hljs-comment">// odd predicate (returns boolean)</span>
+;
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .reduce(<span class="hljs-function">(<span class="hljs-params">sum, a</span>) =&gt;</span> sum + a, <span class="hljs-number">0</span>) <span class="hljs-comment">// sum reducer (returns accumulator)</span>
+;
 </code></pre>
-<p><a href="https://ramdajs.com/docs">Ramda</a> &amp; <a href="https://gist.github.com/jfmengels/6b973b69c491375117dc">lodash/fp</a> docs</p>
+<blockquote>
+<p><dfn title=""><a href="https://www.youtube.com/watch?v=BMUiFMZr7vk">Higher-order function</a></dfn><br>takes one or more functions as arguments or returns a function</p>
+</blockquote>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-4">
         <div data-id="4" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="blog-example-">Blog example 😪</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, pick, replace, take, update } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
+        <section class="slide-content"><h2 id="chain-readable-but-not-optimal-">Chain: readable but not optimal 😪</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">const</span> exerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span>
-  posts
-    .map(pick([<span class="hljs-string">'title'</span>, <span class="hljs-string">'body'</span>]))
-    .map(update(<span class="hljs-string">'body'</span>, replace(<span class="hljs-regexp">/&lt;[^&gt;]*&gt;?/g</span>, <span class="hljs-string">''</span>)))
-    .map(update(<span class="hljs-string">'body'</span>, take&lt;<span class="hljs-built_in">string</span>&gt;(<span class="hljs-number">30</span>)))
+<span class="hljs-keyword">const</span> double = <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item * <span class="hljs-number">2</span>;
+
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(add(<span class="hljs-number">1</span>)) <span class="hljs-comment">// [2, 3, 4]</span>
+  .map(double) <span class="hljs-comment">// [4, 6, 8]</span>
+  .map(add(<span class="hljs-number">-1</span>)) <span class="hljs-comment">// [3, 5, 7]</span>
 ;
 </code></pre>
 <p><big style="color: red">❌</big> Loop 3&times;, allocating new array each time</p>
@@ -512,14 +514,14 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
       <div class="slide hidden" id="slide-5">
         <div data-id="5" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="fusion-">Fusion 😃</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, pick, replace, take, update } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add, double } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> extract = pick([<span class="hljs-string">'title'</span>, <span class="hljs-string">'body'</span>]);
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> clean = update(<span class="hljs-string">'body'</span>, replace(<span class="hljs-regexp">/&lt;[^&gt;]*&gt;?/g</span>, <span class="hljs-string">''</span>));
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> shorten = update(<span class="hljs-string">'body'</span>, take(<span class="hljs-number">30</span>));
+<span class="hljs-keyword">const</span> add1 = add(<span class="hljs-number">1</span>);
+<span class="hljs-keyword">const</span> minus1 = add(<span class="hljs-number">-1</span>);
+<span class="hljs-keyword">const</span> compute = <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> minus1(double(add1(item)));
 
-<span class="hljs-keyword">const</span> exerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span>
-  posts.map(<span class="hljs-function">(<span class="hljs-params">post</span>) =&gt;</span> shorten(clean(extract(post))))
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(compute)
 ;
 </code></pre>
 <p><big style="color: green">✔</big> Loop once, allocating only one new array</p>
@@ -529,15 +531,15 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-6">
         <div data-id="6" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="using-compose-">Using compose 😁</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, compose, pipe } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
-<span class="hljs-keyword">import</span> { extract, clean, shorten } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-5'</span>;
+        <section class="slide-content"><h2 id="using-composition-">Using composition 😁</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, add, double } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">type</span> S = Pick&lt;Post, <span class="hljs-string">'title'</span>|<span class="hljs-string">'body'</span>&gt;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> summarize = compose&lt;Post, S, S, S&gt;(shorten, clean, extract);
-<span class="hljs-comment">// const _summarize = pipe&lt;Post, S, S, S&gt;(extract, clean, shorten);</span>
+<span class="hljs-comment">// const compute = compose(add(-1), double, add(1));</span>
+<span class="hljs-keyword">const</span> compute = pipe(add(<span class="hljs-number">1</span>), double, add(<span class="hljs-number">-1</span>));
 
-<span class="hljs-keyword">const</span> exerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span> posts.map(summarize);
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(compute)
+;
 </code></pre>
 <p><big style="color: green">✔</big> Semantic, concise &amp; efficient</p>
 </section>
@@ -547,15 +549,14 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
       <div class="slide hidden" id="slide-7">
         <div data-id="7" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="mixed-operations-">Mixed operations ? 😵</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, whereEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
-<span class="hljs-keyword">import</span> { summarize } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-6'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { odd, add } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">const</span> myExerpts = <span class="hljs-function">(<span class="hljs-params">posts: Post[]</span>) =&gt;</span>
-  posts
-    .filter(whereEq({ userId: <span class="hljs-string">'me'</span> }))
-    .slice(<span class="hljs-number">0</span>, <span class="hljs-number">20</span>)
-    .map(summarize)
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(add(<span class="hljs-number">1</span>))
+  .filter(odd)
+  .slice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>) <span class="hljs-comment">// .filter(first(1))</span>
 ;
+<span class="hljs-comment">// const first = n =&gt; () =&gt; n-- &gt; 0;</span>
 </code></pre>
 <p><big style="color: red">❌</big> Loop 2&times;, allocates 3 new array</p>
 </section>
@@ -565,17 +566,16 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
       <div class="slide hidden" id="slide-8">
         <div data-id="8" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="combine-predicates-">Combine predicates 😆</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, Predicate, every, some, whereEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { odd, first } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">type</span> Logic = <span class="hljs-keyword">typeof</span> every | <span class="hljs-keyword">typeof</span> some;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> pass = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">logic: Logic, predicates: Predicate&lt;T&gt;[]</span>) =&gt;</span> 
-  (value: T) =&gt; logic(<span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span> predicate(value), predicates)
+<span class="hljs-comment">// every = AND, some = OR</span>
+<span class="hljs-keyword">const</span> pass = <span class="hljs-function">(<span class="hljs-params">logic: 'every' | 'some', predicates: <span class="hljs-built_in">Function</span>[]</span>) =&gt;</span> 
+  a =&gt; predicates[logic](<span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span> predicate(a))
 ;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> first = <span class="hljs-function">(<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt;</span> () =&gt; n-- &gt; <span class="hljs-number">0</span>;
 
-<span class="hljs-keyword">const</span> filter = pass&lt;Post&gt;(every, [whereEq({ userId:<span class="hljs-string">'me'</span> }), first(<span class="hljs-number">20</span>)]);
+<span class="hljs-keyword">const</span> filter = pass(<span class="hljs-string">'every'</span>, [odd, first(<span class="hljs-number">1</span>)]);
 </code></pre>
-<p><big style="color: green">✔</big> Useful with all predicate operations: filter, find...</p>
+<p><big style="color: green">✔</big> Useful with all predicate operations: filter, find, findIndex...</p>
 </section>
       </div>
     </div>
@@ -583,16 +583,12 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
       <div class="slide hidden" id="slide-9">
         <div data-id="9" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="still-no-mixed-operation-">Still no mixed operation 😵</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, every, whereEq } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
-<span class="hljs-keyword">import</span> { summarize } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-6'</span>;
-<span class="hljs-keyword">import</span> { pass, first } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-8'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add, pass, odd, first } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">const</span> userExerpts = <span class="hljs-function">(<span class="hljs-params">userId, n</span>) =&gt;</span> (posts: Post[]) =&gt;
-  posts
-    .filter(pass(every, [whereEq({ userId }), first(n)]))
-    .map(summarize)
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(add(<span class="hljs-number">1</span>))
+  .filter(pass(<span class="hljs-string">'every'</span>, [odd, first(<span class="hljs-number">1</span>)]))
 ;
-<span class="hljs-keyword">const</span> exerpts = userExerpts(<span class="hljs-string">'me'</span>, <span class="hljs-number">20</span>);
 </code></pre>
 <p><big style="color: red">❌</big> Loop 2&times;, allocates 2 new array</p>
 </section>
@@ -601,269 +597,144 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-10">
         <div data-id="10" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="reduce-all-the-things-">Reduce all the things 😎</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Predicate, Mapper } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
-
-<span class="hljs-keyword">const</span> append = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">l: T[], value: T</span>) =&gt;</span> (l.push(value), l);
-<span class="hljs-keyword">const</span> filter = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">predicate: Predicate&lt;T&gt;</span>) =&gt;</span>
-  (f: T[], value: T) =&gt; predicate(value) ? append(f, value) : f;
-<span class="hljs-keyword">const</span> take = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt;</span>
-  (t: T[], value: T) =&gt; t.length &lt; n ? append(t, value) : t;
-<span class="hljs-keyword">const</span> map = &lt;T, U&gt;<span class="hljs-function">(<span class="hljs-params">mapper: Mapper&lt;T, U&gt;</span>) =&gt;</span>
-  (m: U[], value: T) =&gt; append(m, mapper(value));
-</code></pre>
-<p><big style="color: blue">‼</big> Implement every operation with &#39;reduce&#39;</p>
+        <section class="slide-content"><h2 id="be-optimal-">Be optimal 🤩</h2>
+<p><img src="transduce.svg" alt="transduce is optimal"></p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-11">
         <div data-id="11" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="make-it-composable-">Make it composable 🤪</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Predicate, Mapper, Reducer } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> append = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">l: T[], value: T</span>) =&gt;</span> (l.push(value), l);
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> filter = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">predicate: Predicate&lt;T&gt;</span>) =&gt;</span>
-  (append: Reducer&lt;T&gt;) =&gt; 
-    <span class="hljs-function">(<span class="hljs-params">f: T[], value: T</span>) =&gt;</span> predicate(value) ? append(f, value) : f;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> take = &lt;T&gt;<span class="hljs-function">(<span class="hljs-params">n: <span class="hljs-built_in">number</span></span>) =&gt;</span>
-  (append: Reducer&lt;T&gt;) =&gt;
-    <span class="hljs-function">(<span class="hljs-params">t: T[], value: T</span>) =&gt;</span> t.length &lt; n ? append(t, value) : t;
-<span class="hljs-keyword">export</span> <span class="hljs-keyword">const</span> map = &lt;T, U&gt;<span class="hljs-function">(<span class="hljs-params">mapper: Mapper&lt;T, U&gt;</span>) =&gt;</span>
-  (append: Reducer&lt;U&gt;) =&gt;
-    <span class="hljs-function">(<span class="hljs-params">m: U[], value: T</span>) =&gt;</span> append(m, mapper(value));
+        <section class="slide-content"><h2 id="reduce-all-the-things-">Reduce all the things 😎</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> append = <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> { list.push(value); <span class="hljs-keyword">return</span> list; };
+
+<span class="hljs-keyword">const</span> map = <span class="hljs-function"><span class="hljs-params">mapper</span> =&gt;</span>
+  (list, value) =&gt; append(list, mapper(value))
+;
+<span class="hljs-keyword">const</span> filter = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
+  (list, value) =&gt; predicate(value) ? append(list, value) : list
+;
+<span class="hljs-keyword">const</span> take = <span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> <span class="hljs-comment">// =~ first</span>
+  (list, value) =&gt; list.length &lt; n ? append(list, value) : list
+;
 </code></pre>
-<p><big style="color: blue">‼</big> Return unary reducer factory</p>
+<p><big style="color: blue">‼</big> Implement every operation with &#39;reduce&#39;</p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-12">
         <div data-id="12" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="compose-reducers-">Compose reducers 😲</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Post, pipe, whereEq, Reducer } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
-<span class="hljs-keyword">import</span> { summarize, S <span class="hljs-keyword">as</span> Summary } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-6'</span>;
-<span class="hljs-keyword">import</span> { filter, take, map, append } <span class="hljs-keyword">from</span> <span class="hljs-string">'slide-11'</span>;
-<span class="hljs-keyword">type</span> R = Reducer&lt;Post&gt;;
-<span class="hljs-keyword">const</span> userExerpts = <span class="hljs-function">(<span class="hljs-params">userId: <span class="hljs-built_in">string</span>, n: <span class="hljs-built_in">number</span></span>) =&gt;</span> (posts: Post[]) =&gt;
-  posts.reduce&lt;Summary[]&gt;(
-    pipe&lt;R, R, R, Reducer&lt;Post, Summary[]&gt;&gt;(
-      filter&lt;Post&gt;(whereEq({ userId })),
-      take&lt;Post&gt;(n),
-      map&lt;Post, Summary&gt;(summarize),
-    )(append), []
-  )
+        <section class="slide-content"><h2 id="make-it-composable-">Make it composable 🤪</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { append } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+
+<span class="hljs-keyword">const</span> map = <span class="hljs-function"><span class="hljs-params">mapper</span> =&gt;</span> append =&gt;
+  <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> append(list, mapper(value))
+;
+<span class="hljs-keyword">const</span> filter = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span> append =&gt;
+  <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> predicate(value) ? append(list, value) : list
+;
+<span class="hljs-keyword">const</span> take = <span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> append =&gt;
+  <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> list.length &lt; n ? append(list, value) : list
 ;
 </code></pre>
-<p><big style="color: green">✔</big> Do you recognize rxjs pipe pattern ?</p>
+<p><big style="color: blue">‼</big> Now we can compose reducers</p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-13">
         <div data-id="13" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="reusable-transduce-">Reusable transduce 🤑</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { Reducer, reduce } <span class="hljs-keyword">from</span> <span class="hljs-string">'demo'</span>;
+        <section class="slide-content"><h2 id="compose-reducers-">Compose reducers 😲</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, filter, take, map, add, odd } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">const</span> transduce = &lt;T = <span class="hljs-built_in">any</span>, U = T&gt;(
-  transform: <span class="hljs-function">(<span class="hljs-params">x</span>) =&gt;</span> Reducer&lt;T, U[]&gt;,
-  append,
-  accumulator: U[],
-  list: T[]
-) =&gt;
-  reduce(transform(append), accumulator, list)
-;
+<span class="hljs-keyword">const</span> transform = pipe(
+  map(add(<span class="hljs-number">1</span>)),
+  filter(odd),
+  take(<span class="hljs-number">1</span>),
+);
+
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].reduce(transform(append), []);
 </code></pre>
-<p><big style="color: green">✔</big> Ok, but how to abstract list type ?</p>
+<p><big style="color: green">✔</big> rx pipe pattern ;)</p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-14">
         <div data-id="14" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="roll-a-generic-reduce">Roll a generic reduce</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> reduce = <span class="hljs-function">(<span class="hljs-params">transformer, accumulator, iterator</span>) =&gt;</span> {
-  <span class="hljs-keyword">let</span> step = iterator.next();
-  <span class="hljs-keyword">while</span> (!step.done) {
-    accumulator = transformer.step(accumulator, step.value);
-    step = iterator.next();
-  }
-  <span class="hljs-keyword">return</span> transformer.result(accumulator);
-}
+        <section class="slide-content"><h2 id="reusable-transduce-">Reusable transduce 🤑</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { reduce } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+
+<span class="hljs-keyword">const</span> transduce = <span class="hljs-function">(<span class="hljs-params">transform, append, accumulator, list</span>) =&gt;</span>
+  reduce(transform(append), accumulator, list)
+<span class="hljs-comment">// list.reduce(transform(append), accumulator)</span>
+;
 </code></pre>
+<p><big style="color: green">✔</big> Fine, but how does this abstract list type ?</p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-15">
         <div data-id="15" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="stop-iteration">Stop iteration</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> reduce = <span class="hljs-function">(<span class="hljs-params">transformer, accumulator, iterator</span>) =&gt;</span> {
-  <span class="hljs-keyword">let</span> step = iterator.next();
-  <span class="hljs-keyword">while</span> (!step.done) {
-    accumulator = transformer.step(accumulator, step.value);
-    <span class="hljs-keyword">if</span> (accumulator &amp;&amp; accumulator.reduced) {
-      accumulator = accumulator.value;
-      <span class="hljs-keyword">break</span>;
-    }
+        <section class="slide-content"><h2 id="a-generic-reduce-">A generic reduce 🤓</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> _reduce = <span class="hljs-function">(<span class="hljs-params">reducer, accumulator, iterator</span>) =&gt;</span> {
+  <span class="hljs-keyword">let</span> step;
+  <span class="hljs-keyword">do</span> {
     step = iterator.next();
-  }
-  <span class="hljs-keyword">return</span> transformer.result(accumulator);
+    accumulator = reducer(accumulator, step.value);
+  } <span class="hljs-keyword">while</span> (!step.done);
+  <span class="hljs-keyword">return</span> accumulator;
 }
 </code></pre>
-<script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/dev/vs/loader.js"></script>
-<script>
-  require.config({ paths: {
-    vs: 'https://unpkg.com/monaco-editor-core@0.12.0/min/vs',
-    'vs/language/typescript': 'https://unpkg.com/monaco-typescript@3.1.0/release/min',
-  }})
-  // https://github.com/Microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md#option-1-use-a-data-worker-uri
-  window.MonacoEnvironment = {
-    getWorkerUrl(workerId, label) {
-      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-        self.MonacoEnvironment = {
-          baseUrl: 'https://unpkg.com/monaco-editor-core@0.12.0/min/',
-          getWorkerUrl(moduleId, label) {
-            if (label === 'typescript' || label === 'javascript')
-              return 'https://unpkg.com/monaco-typescript@3.1.0/release/min/tsWorker.js'
-          }
-        }
-        importScripts('https://unpkg.com/monaco-editor-core@0.12.0/min/vs/base/worker/workerMain.js')`
-      )}`
-    }
-  }
-  require([
-    'vs/editor/editor.main',
-    'theme/editor/editor'
-  ], ({ editor, languages, Uri }, { iniEditor }) => {
-    require([
-      'vs/language/typescript/monaco.contribution',
-      'https://unpkg.com/ramda@0.25.0/dist/ramda.min.js'
-    ], (_, ramda) => {
-      const src = (uri) => fetch(uri).then(response => response.text())
-      Promise.all([
-        src('https://unpkg.com/@types/ramda@0.25.40/index.d.ts'),
-        src('demo.ts'),
-      ])
-      .then(([ramdaTypes, demo]) => {
-        const { typescript } = languages
-        typescript.typescriptDefaults.setDiagnosticsOptions({
-          noSemanticValidation: false,
-          noSyntaxValidation: false,
-        })
-        typescript.typescriptDefaults.setCompilerOptions({
-          target: typescript.ScriptTarget.ES2018,
-          moduleResolution: typescript.ModuleResolutionKind.NodeJs,
-          module: typescript.ModuleKind.Classic,
-          typeRoots: ['node_modules/@types'],
-        })
-        typescript.typescriptDefaults.addExtraLib(
-          ramdaTypes,
-          'node_modules/@types/ramda/index.d.ts',
-        )
-        typescript.typescriptDefaults.addExtraLib(
-          demo,
-          'node_modules/demo/index.d.ts',
-        )
-        const nodes = document.querySelectorAll('.slide pre')
-        // const libs = [{
-        //   uri: 'node_modules/ramda/index.ts',
-        //   factory: () => eval(ramda),
-        // }]
-        const models = [
-          // editor.createModel(demo, 'typescript', 'node_modules/demo/index.ts'),
-        ]
-        nodes.forEach((node, index) => {
-          const { width, height } = node.getBoundingClientRect()
-          node.style.width = `${width}px`
-          node.style.height = `${height}px`
-          const code = node.textContent.trim()
-          node.innerHTML = ''
-          const slide = node.closest('.slide').id
-          const model = editor.createModel(code, 'typescript', `node_modules/${slide}/index.ts`)
-          models.push(model)
-          editor.create(node, {
-            model,
-            // readOnly: true,
-            automaticLayout: true,
-            language: 'typescript',
-            minimap: { enabled: false },
-            theme: 'vs-dark',
-            renderLineHighlight: 'none',
-            lineNumbersMinChars: 2,
-            fontSize: 40,
-            contextmenu: false,
-            fontFamily: 'Inconsolata, monospace',
-            wordWrap: 'on',
-            scrollbar: { verticalScrollbarSize: 0 },
-            scrollBeyondLastLine: false
-          })
-          const LINE_HEIGHT = 54
-          const CONTAINER_GUTTER = 0
-          const codeContainer = node.getElementsByClassName('view-lines')[0]
-          let prevLineCount = 0
-          model.onDidChangeContent(() => setTimeout(() => {
-              const height =
-                codeContainer.childElementCount > prevLineCount
-                  ? codeContainer.offsetHeight // unfold
-                  : codeContainer.childElementCount * LINE_HEIGHT + CONTAINER_GUTTER; // fold
-              prevLineCount = codeContainer.childElementCount
-              console.log(node, editor, height)
-              node.style.height = height + 'px'
-              editor.layout()
-            }, 0))
-          })
-
-        // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
-        typescript.getTypeScriptWorker()
-          .then(() => iniEditor({ editor, languages }) )
-/*
-        function transpile(model) {
-          console.log('transpile', model.uri)
-          return this(model.uri)
-            .then((client) => client.getEmitOutput(model.uri))
-            .then(({ outputFiles }) => ({
-              uri: model.uri,
-              factory: new Function('require, exports', `${outputFiles[0].text}`)
-            }))
-        }
-        typescript.getTypeScriptWorker()
-          .then(worker => Promise.all(libs.concat(models.map(transpile, worker)))
-            .then(modules => {
-              const factories = modules
-                .reduce((m, { uri, factory }) => ((m[uri] = factory), m), {})
-
-              console.log('factories', factories, modules)
-              const load = (factories) => {
-                require.reset()
-                Object.entries(factories)
-                .forEach(([uri, factory]) => {
-                  const name = uri.replace(/node_modules\/(.*?)\/index\.ts/, '$1')
-                  define(name, ['require', 'exports'], factory)
-                  console.log('define', name, factory)
-                })
-              }
-              load(factories)
-              models.forEach(model => model.onDidChangeContent(() => {
-                const { uri, factory } = transpile.call(worker, model)
-                factories[uri] = factory
-                load(factories)
-                console.log('change')
-              }))
-              console.log('ready')
-            })
-          )
-//*/
-      })
-    })
-  })
-</script></section>
+<p><big style="color: green">✔</big> Iterator allows to abstract how to reduce any iterable</p>
+</section>
       </div>
     </div>
     <div class="slide-wrapper">
-      <div class="slide hidden author-slide" id="slide-16">
+      <div class="slide hidden" id="slide-16">
         <div data-id="16" class="slide-overlay"></div>
+        <section class="slide-content"><h2 id="stop-iteration-">Stop iteration 🤠</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> reduce = <span class="hljs-function">(<span class="hljs-params">reducer, accumulator, iterator</span>) =&gt;</span> {
+  <span class="hljs-keyword">let</span> step;
+  <span class="hljs-keyword">do</span> {
+    step = iterator.next();
+    accumulator = reducer(accumulator, step.value);
+    <span class="hljs-keyword">if</span> (accumulator.reduced) {
+      <span class="hljs-keyword">return</span> accumulator.value;
+    }
+  } <span class="hljs-keyword">while</span> (!step.done)
+  <span class="hljs-keyword">return</span> accumulator.value;
+}
+</code></pre>
+<p><big style="color: green">✔</big> Avoid to iterate whole collection when not needed</p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden" id="slide-17">
+        <div data-id="17" class="slide-overlay"></div>
+        <section class="slide-content"><h2 id="dit-it-blow-your-mind-">Dit it blow your mind ? 🤯</h2>
+<h3 id="takeaway">Takeaway</h3>
+<p><strong>Transduce</strong></p>
+<ul>
+<li>is <strong>optimized</strong> (iterate once, only needed items)</li>
+<li>is <strong>generic</strong> (any types of sync / async collection)</li>
+<li>powers <strong>reactive &amp; stream</strong> based operations</li>
+<li>I <span style="color: red">🖤</span> reduce</li>
+</ul>
+<p>Curious? Look @ libs <a href="https://ramdajs.com/docs">Ramda</a>, <a href="https://gist.github.com/jfmengels/6b973b69c491375117dc">lodash/fp</a> &amp; <a href="https://github.com/stoeffel/awesome-fp-js">more</a>...</p>
+<p><br></p>
+<p><em>P.S. FP offers lot more <a href="https://www.youtube.com/watch?v=9QveBbn7t_c">powerfull abstractions</a>.</em></p>
+</section>
+      </div>
+    </div>
+    <div class="slide-wrapper">
+      <div class="slide hidden author-slide" id="slide-18">
+        <div data-id="18" class="slide-overlay"></div>
         <section class="slide-content"><div class="author">
-  <h1 class="name">I&#39;model Adrien, frontend developer</h1>
+  <h1 class="name">I&#39;m Adrien, frontend developer</h1>
     <h3 class="email">
       <a href="mailto:a.gibrat@oodrive.com">a.gibrat@oodrive.com</a>
     </h3>
@@ -875,7 +746,108 @@ assert(curry(sum3)(<span class="hljs-number">1</span>, <span class="hljs-number"
 
 
 
-    <script async src="http://localhost:35729/livereload.js"></script>
+
+  <script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/dev/vs/loader.js"></script>
+  <script>
+    require.config({ paths: {
+      vs: 'https://unpkg.com/monaco-editor-core@0.12.0/min/vs',
+      'vs/language/typescript': 'https://unpkg.com/monaco-typescript@3.1.0/release/min',
+    }})
+    // https://github.com/Microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md#option-1-use-a-data-worker-uri
+    window.MonacoEnvironment = {
+      getWorkerUrl(workerId, label) {
+        return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
+          self.MonacoEnvironment = {
+            baseUrl: 'https://unpkg.com/monaco-editor-core@0.12.0/min/',
+            getWorkerUrl(moduleId, label) {
+              if (label === 'typescript' || label === 'javascript')
+                return 'https://unpkg.com/monaco-typescript@3.1.0/release/min/tsWorker.js'
+            }
+          }
+          importScripts('https://unpkg.com/monaco-editor-core@0.12.0/min/vs/base/worker/workerMain.js')`
+        )}`
+      }
+    }
+    require([
+      'vs/editor/editor.main',
+      'theme/editor/editor'
+    ], ({ editor, languages, Uri }, { iniEditor }) => {
+      require([
+        'vs/language/typescript/monaco.contribution',
+        'https://unpkg.com/ramda@0.25.0/dist/ramda.min.js'
+      ], (_, ramda) => {
+        const src = (uri) => fetch(uri).then(response => response.text())
+        Promise.all([
+          src('https://unpkg.com/@types/ramda@0.25.40/index.d.ts'),
+          src('slides.ts'),
+        ])
+        .then(([ramdaTypes, slides]) => {
+          const { typescript } = languages
+          typescript.typescriptDefaults.setDiagnosticsOptions({
+            noSemanticValidation: false,
+            noSyntaxValidation: false,
+          })
+          typescript.typescriptDefaults.setCompilerOptions({
+            target: typescript.ScriptTarget.ES2018,
+            moduleResolution: typescript.ModuleResolutionKind.NodeJs,
+            module: typescript.ModuleKind.Classic,
+            typeRoots: ['node_modules/@types'],
+          })
+          typescript.typescriptDefaults.addExtraLib(
+            ramdaTypes,
+            'node_modules/@types/ramda/index.d.ts',
+          )
+          typescript.typescriptDefaults.addExtraLib(
+            slides,
+            'node_modules/slides/index.d.ts',
+          )
+          const nodes = document.querySelectorAll('.slide pre')
+          nodes.forEach((node, index) => {
+            const { width, height } = node.getBoundingClientRect()
+            node.style.width = `${width}px`
+            node.style.height = `${height}px`
+            const code = node.textContent.trim()
+            node.innerHTML = ''
+            const slide = node.closest('.slide').id
+            const model = editor.createModel(code, 'typescript', `node_modules/${slide}/index.ts`)
+            editor.create(node, {
+              model,
+              // readOnly: true,
+              automaticLayout: true,
+              language: 'typescript',
+              minimap: { enabled: false },
+              theme: 'vs-dark',
+              renderLineHighlight: 'none',
+              lineNumbersMinChars: 2,
+              fontSize: 40,
+              contextmenu: false,
+              fontFamily: 'Inconsolata, monospace',
+              wordWrap: 'on',
+              scrollbar: { verticalScrollbarSize: 0 },
+              scrollBeyondLastLine: false
+            })
+            const LINE_HEIGHT = 54
+            const CONTAINER_GUTTER = 0
+            const codeContainer = node.getElementsByClassName('view-lines')[0]
+            let prevLineCount = 0
+            model.onDidChangeContent(() => setTimeout(() => {
+                const height =
+                  codeContainer.childElementCount > prevLineCount
+                    ? codeContainer.offsetHeight // unfold
+                    : codeContainer.childElementCount * LINE_HEIGHT + CONTAINER_GUTTER; // fold
+                prevLineCount = codeContainer.childElementCount
+                // console.log(node, editor, height)
+                node.style.height = height + 'px'
+                editor.layout()
+              }, 0))
+          })
+          // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
+          typescript.getTypeScriptWorker()
+            .then(() => iniEditor({ editor, languages }))
+        })
+      })
+    })
+  </script>
 
   <script type="text/javascript">
     /**
@@ -1098,5 +1070,6 @@ function toggleOverview() {
 }
 
   </script>
+
 </body>
 </html>

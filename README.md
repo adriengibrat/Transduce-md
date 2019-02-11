@@ -1,6 +1,6 @@
-title: Transducers, powerful abstractions
+title: Transducers, powerful abstraction
 author:
-  name: I'model Adrien, frontend developer
+  name: I'm Adrien, frontend developer
   email: a.gibrat@oodrive.com
 theme: ./theme
 controls: false
@@ -10,9 +10,7 @@ output: index.html
 
 # Transducers
 
-## powerful abstractions
-
-<center>![Oodrive](theme/img/logo.jpg)</center>
+## powerful abstraction
 
 --
 
@@ -21,38 +19,39 @@ output: index.html
 > <cite>[clojure.org](https://clojure.org/reference/transducers)</cite>
 compose transformations <br>without awareness of input <br>nor creation of intermediate aggregates
 
-<small style="float:left;">in physics *convert energy to signal*</small>
-
-<small style="float:right;margin-right:45px">in biology *transfer genetic material*</small>
+<small>* You may use it often without noticing it</small>
 
 --
 
-## Foreword, curry ♨
-
-> <dfn title="Function that takes one or more functions as arguments / returns a function">[Higher-order function](https://www.youtube.com/watch?v=BMUiFMZr7vk)</dfn> that transform <br><dfn title="Function with exactly n arguments">[n-ary function](https://xlinux.nist.gov/dads/HTML/naryfunc.html)</dfn> to a chain of *n* <dfn title="Function that takes one argument">[unary function](https://xlinux.nist.gov/dads/HTML/unaryfunc.html)</dfn>
+## Functional programing ♨
 
 ```typescript
-import { curry, assert } from 'demo';
+const add = a => b => a + b; // returns a function
 
-const sum3 = (a: number, b: number, c: number) => a + b + c;
-const result = curry(sum3)(1)(2)(3); // 6
-
-assert(curry(sum3)(1, 2)(3) === curry(sum3)(1)(2, 3), 'pragmatic curry');
+[1, 2, 3]
+  .map(add(1))
+  .filter(a => !!(a % 2)) // odd predicate (returns boolean)
+;
+[1, 2, 3]
+  .reduce((sum, a) => sum + a, 0) // sum reducer (returns accumulator)
+;
 ```
-[Ramda](https://ramdajs.com/docs) & [lodash/fp](https://gist.github.com/jfmengels/6b973b69c491375117dc) docs
+
+> <dfn title="">[Higher-order function](https://www.youtube.com/watch?v=BMUiFMZr7vk)</dfn><br>takes one or more functions as arguments or returns a function
 
 --
 
-## Blog example 😪
+## Chain: readable but not optimal 😪
 
 ```typescript
-import { Post, pick, replace, take, update } from 'demo';
+import { add } from 'slides';
 
-const exerpts = (posts: Post[]) =>
-  posts
-    .map(pick(['title', 'body']))
-    .map(update('body', replace(/<[^>]*>?/g, '')))
-    .map(update('body', take<string>(30)))
+const double = item => item * 2;
+
+const result = [1, 2, 3]
+  .map(add(1)) // [2, 3, 4]
+  .map(double) // [4, 6, 8]
+  .map(add(-1)) // [3, 5, 7]
 ;
 ```
 
@@ -63,14 +62,14 @@ const exerpts = (posts: Post[]) =>
 ## Fusion 😃
 
 ```typescript
-import { Post, pick, replace, take, update } from 'demo';
+import { add, double } from 'slides';
 
-export const extract = pick(['title', 'body']);
-export const clean = update('body', replace(/<[^>]*>?/g, ''));
-export const shorten = update('body', take(30));
+const add1 = add(1);
+const minus1 = add(-1);
+const compute = item => minus1(double(add1(item)));
 
-const exerpts = (posts: Post[]) =>
-  posts.map((post) => shorten(clean(extract(post))))
+const result = [1, 2, 3]
+  .map(compute)
 ;
 ```
 
@@ -78,17 +77,17 @@ const exerpts = (posts: Post[]) =>
 
 --
 
-## Using compose 😁
+## Using composition 😁
 
 ```typescript
-import { Post, compose, pipe } from 'demo';
-import { extract, clean, shorten } from 'slide-5';
+import { pipe, add, double } from 'slides';
 
-export type S = Pick<Post, 'title'|'body'>
-export const summarize = compose<Post, S, S, S>(shorten, clean, extract);
-// const _summarize = pipe<Post, S, S, S>(extract, clean, shorten);
+// const compute = compose(add(-1), double, add(1));
+const compute = pipe(add(1), double, add(-1));
 
-const exerpts = (posts: Post[]) => posts.map(summarize);
+const result = [1, 2, 3]
+  .map(compute)
+;
 ```
 
 <big style="color: green">✔</big> Semantic, concise & efficient
@@ -98,15 +97,14 @@ const exerpts = (posts: Post[]) => posts.map(summarize);
 ## Mixed operations ? 😵
 
 ```typescript
-import { Post, whereEq } from 'demo';
-import { summarize } from 'slide-6';
+import { odd, add } from 'slides';
 
-const myExerpts = (posts: Post[]) =>
-  posts
-    .filter(whereEq({ userId: 'me' }))
-    .slice(0, 20)
-    .map(summarize)
+const result = [1, 2, 3]
+  .map(add(1))
+  .filter(odd)
+  .slice(0, 1) // .filter(first(1))
 ;
+// const first = n => () => n-- > 0;
 ```
 
 <big style="color: red">❌</big> Loop 2&times;, allocates 3 new array
@@ -116,51 +114,54 @@ const myExerpts = (posts: Post[]) =>
 ## Combine predicates 😆
 
 ```typescript
-import { Post, Predicate, every, some, whereEq } from 'demo';
+import { odd, first } from 'slides';
 
-type Logic = typeof every | typeof some;
-export const pass = <T>(logic: Logic, predicates: Predicate<T>[]) => 
-  (value: T) => logic(predicate => predicate(value), predicates)
+// every = AND, some = OR
+const pass = (logic: 'every' | 'some', predicates: Function[]) => 
+  a => predicates[logic](predicate => predicate(a))
 ;
-export const first = (n: number) => () => n-- > 0;
 
-const filter = pass<Post>(every, [whereEq({ userId:'me' }), first(20)]);
+const filter = pass('every', [odd, first(1)]);
 ```
 
-<big style="color: green">✔</big> Useful with all predicate operations: filter, find...
+<big style="color: green">✔</big> Useful with all predicate operations: filter, find, findIndex...
 
 --
 ## Still no mixed operation 😵
 
 ```typescript
-import { Post, every, whereEq } from 'demo';
-import { summarize } from 'slide-6';
-import { pass, first } from 'slide-8';
+import { add, pass, odd, first } from 'slides';
 
-const userExerpts = (userId, n) => (posts: Post[]) =>
-  posts
-    .filter(pass(every, [whereEq({ userId }), first(n)]))
-    .map(summarize)
+const result = [1, 2, 3]
+  .map(add(1))
+  .filter(pass('every', [odd, first(1)]))
 ;
-const exerpts = userExerpts('me', 20);
 ```
 
 <big style="color: red">❌</big> Loop 2&times;, allocates 2 new array
 
 --
 
+## Be optimal 🤩
+
+![transduce is optimal](transduce.svg)
+
+--
+
 ## Reduce all the things 😎
 
 ```typescript
-import { Predicate, Mapper } from 'demo';
+const append = (list, value) => { list.push(value); return list; };
 
-const append = <T>(l: T[], value: T) => (l.push(value), l);
-const filter = <T>(predicate: Predicate<T>) =>
-  (f: T[], value: T) => predicate(value) ? append(f, value) : f;
-const take = <T>(n: number) =>
-  (t: T[], value: T) => t.length < n ? append(t, value) : t;
-const map = <T, U>(mapper: Mapper<T, U>) =>
-  (m: U[], value: T) => append(m, mapper(value));
+const map = mapper =>
+  (list, value) => append(list, mapper(value))
+;
+const filter = predicate =>
+  (list, value) => predicate(value) ? append(list, value) : list
+;
+const take = n => // =~ first
+  (list, value) => list.length < n ? append(list, value) : list
+;
 ```
 
 <big style="color: blue">‼</big> Implement every operation with 'reduce'
@@ -170,241 +171,105 @@ const map = <T, U>(mapper: Mapper<T, U>) =>
 ## Make it composable 🤪
 
 ```typescript
-import { Predicate, Mapper, Reducer } from 'demo';
-export const append = <T>(l: T[], value: T) => (l.push(value), l);
-export const filter = <T>(predicate: Predicate<T>) =>
-  (append: Reducer<T>) => 
-    (f: T[], value: T) => predicate(value) ? append(f, value) : f;
-export const take = <T>(n: number) =>
-  (append: Reducer<T>) =>
-    (t: T[], value: T) => t.length < n ? append(t, value) : t;
-export const map = <T, U>(mapper: Mapper<T, U>) =>
-  (append: Reducer<U>) =>
-    (m: U[], value: T) => append(m, mapper(value));
+import { append } from 'slides';
+
+const map = mapper => append =>
+  (list, value) => append(list, mapper(value))
+;
+const filter = predicate => append =>
+  (list, value) => predicate(value) ? append(list, value) : list
+;
+const take = n => append =>
+  (list, value) => list.length < n ? append(list, value) : list
+;
 ```
 
-<big style="color: blue">‼</big> Return unary reducer factory
+<big style="color: blue">‼</big> Now we can compose reducers
 
 --
 
 ## Compose reducers 😲
 
 ```typescript
-import { Post, pipe, whereEq, Reducer } from 'demo';
-import { summarize, S as Summary } from 'slide-6';
-import { filter, take, map, append } from 'slide-11';
-type R = Reducer<Post>;
-const userExerpts = (userId: string, n: number) => (posts: Post[]) =>
-  posts.reduce<Summary[]>(
-    pipe<R, R, R, Reducer<Post, Summary[]>>(
-      filter<Post>(whereEq({ userId })),
-      take<Post>(n),
-      map<Post, Summary>(summarize),
-    )(append), []
-  )
-;
+import { pipe, filter, take, map, add, odd } from 'slides';
+
+const transform = pipe(
+  map(add(1)),
+  filter(odd),
+  take(1),
+);
+
+const result = [1, 2, 3].reduce(transform(append), []);
 ```
 
-<big style="color: green">✔</big> Do you recognize rxjs pipe pattern ?
+<big style="color: green">✔</big> rx pipe pattern ;)
 
 --
 
 ## Reusable transduce 🤑
 
 ```typescript
-import { Reducer, reduce } from 'demo';
+import { reduce } from 'slides';
 
-const transduce = <T = any, U = T>(
-  transform: (x) => Reducer<T, U[]>,
-  append,
-  accumulator: U[],
-  list: T[]
-) =>
+const transduce = (transform, append, accumulator, list) =>
   reduce(transform(append), accumulator, list)
+// list.reduce(transform(append), accumulator)
 ;
 ```
 
-<big style="color: green">✔</big> Ok, but how to abstract list type ?
+<big style="color: green">✔</big> Fine, but how does this abstract list type ?
 
 --
 
-## Roll a generic reduce
+## A generic reduce 🤓
 
 ```typescript
-const reduce = (transformer, accumulator, iterator) => {
-  let step = iterator.next();
-  while (!step.done) {
-    accumulator = transformer.step(accumulator, step.value);
+const _reduce = (reducer, accumulator, iterator) => {
+  let step;
+  do {
     step = iterator.next();
-  }
-  return transformer.result(accumulator);
+    accumulator = reducer(accumulator, step.value);
+  } while (!step.done);
+  return accumulator;
 }
 ```
+
+<big style="color: green">✔</big> Iterator allows to abstract how to reduce any iterable
 
 --
 
-## Stop iteration
+## Stop iteration 🤠
 
 ```typescript
-const reduce = (transformer, accumulator, iterator) => {
-  let step = iterator.next();
-  while (!step.done) {
-    accumulator = transformer.step(accumulator, step.value);
-    if (accumulator && accumulator.reduced) {
-      accumulator = accumulator.value;
-      break;
-    }
+const reduce = (reducer, accumulator, iterator) => {
+  let step;
+  do {
     step = iterator.next();
-  }
-  return transformer.result(accumulator);
+    accumulator = reducer(accumulator, step.value);
+    if (accumulator.reduced) {
+      return accumulator.value;
+    }
+  } while (!step.done)
+  return accumulator.value;
 }
 ```
 
+<big style="color: green">✔</big> Avoid to iterate whole collection when not needed
 
-<script type="text/javascript" src="https://unpkg.com/monaco-editor-core@0.12.0/dev/vs/loader.js"></script>
-<script>
-  require.config({ paths: {
-    vs: 'https://unpkg.com/monaco-editor-core@0.12.0/min/vs',
-    'vs/language/typescript': 'https://unpkg.com/monaco-typescript@3.1.0/release/min',
-  }})
-  // https://github.com/Microsoft/monaco-editor/blob/master/docs/integrate-amd-cross.md#option-1-use-a-data-worker-uri
-  window.MonacoEnvironment = {
-    getWorkerUrl(workerId, label) {
-      return `data:text/javascript;charset=utf-8,${encodeURIComponent(`
-        self.MonacoEnvironment = {
-          baseUrl: 'https://unpkg.com/monaco-editor-core@0.12.0/min/',
-          getWorkerUrl(moduleId, label) {
-            if (label === 'typescript' || label === 'javascript')
-              return 'https://unpkg.com/monaco-typescript@3.1.0/release/min/tsWorker.js'
-          }
-        }
-        importScripts('https://unpkg.com/monaco-editor-core@0.12.0/min/vs/base/worker/workerMain.js')`
-      )}`
-    }
-  }
-  require([
-    'vs/editor/editor.main',
-    'theme/editor/editor'
-  ], ({ editor, languages, Uri }, { iniEditor }) => {
-    require([
-      'vs/language/typescript/monaco.contribution',
-      'https://unpkg.com/ramda@0.25.0/dist/ramda.min.js'
-    ], (_, ramda) => {
-      const src = (uri) => fetch(uri).then(response => response.text())
-      Promise.all([
-        src('https://unpkg.com/@types/ramda@0.25.40/index.d.ts'),
-        src('demo.ts'),
-      ])
-      .then(([ramdaTypes, demo]) => {
-        const { typescript } = languages
-        typescript.typescriptDefaults.setDiagnosticsOptions({
-          noSemanticValidation: false,
-          noSyntaxValidation: false,
-        })
-        typescript.typescriptDefaults.setCompilerOptions({
-          target: typescript.ScriptTarget.ES2018,
-          moduleResolution: typescript.ModuleResolutionKind.NodeJs,
-          module: typescript.ModuleKind.Classic,
-          typeRoots: ['node_modules/@types'],
-        })
-        typescript.typescriptDefaults.addExtraLib(
-          ramdaTypes,
-          'node_modules/@types/ramda/index.d.ts',
-        )
-        typescript.typescriptDefaults.addExtraLib(
-          demo,
-          'node_modules/demo/index.d.ts',
-        )
-        const nodes = document.querySelectorAll('.slide pre')
-        // const libs = [{
-        //   uri: 'node_modules/ramda/index.ts',
-        //   factory: () => eval(ramda),
-        // }]
-        const models = [
-          // editor.createModel(demo, 'typescript', 'node_modules/demo/index.ts'),
-        ]
-        nodes.forEach((node, index) => {
-          const { width, height } = node.getBoundingClientRect()
-          node.style.width = `${width}px`
-          node.style.height = `${height}px`
-          const code = node.textContent.trim()
-          node.innerHTML = ''
-          const slide = node.closest('.slide').id
-          const model = editor.createModel(code, 'typescript', `node_modules/${slide}/index.ts`)
-          models.push(model)
-          editor.create(node, {
-            model,
-            // readOnly: true,
-            automaticLayout: true,
-            language: 'typescript',
-            minimap: { enabled: false },
-            theme: 'vs-dark',
-            renderLineHighlight: 'none',
-            lineNumbersMinChars: 2,
-            fontSize: 40,
-            contextmenu: false,
-            fontFamily: 'Inconsolata, monospace',
-            wordWrap: 'on',
-            scrollbar: { verticalScrollbarSize: 0 },
-            scrollBeyondLastLine: false
-          })
-          const LINE_HEIGHT = 54
-          const CONTAINER_GUTTER = 0
-          const codeContainer = node.getElementsByClassName('view-lines')[0]
-          let prevLineCount = 0
-          model.onDidChangeContent(() => setTimeout(() => {
-              const height =
-                codeContainer.childElementCount > prevLineCount
-                  ? codeContainer.offsetHeight // unfold
-                  : codeContainer.childElementCount * LINE_HEIGHT + CONTAINER_GUTTER; // fold
-              prevLineCount = codeContainer.childElementCount
-              console.log(node, editor, height)
-              node.style.height = height + 'px'
-              editor.layout()
-            }, 0))
-          })
+--
 
-        // https://github.com/Microsoft/monaco-editor/issues/884#issuecomment-391706345
-        typescript.getTypeScriptWorker()
-          .then(() => iniEditor({ editor, languages }) )
-/*
-        function transpile(model) {
-          console.log('transpile', model.uri)
-          return this(model.uri)
-            .then((client) => client.getEmitOutput(model.uri))
-            .then(({ outputFiles }) => ({
-              uri: model.uri,
-              factory: new Function('require, exports', `${outputFiles[0].text}`)
-            }))
-        }
-        typescript.getTypeScriptWorker()
-          .then(worker => Promise.all(libs.concat(models.map(transpile, worker)))
-            .then(modules => {
-              const factories = modules
-                .reduce((m, { uri, factory }) => ((m[uri] = factory), m), {})
-              
-              console.log('factories', factories, modules)
-              const load = (factories) => {
-                require.reset()
-                Object.entries(factories)
-                .forEach(([uri, factory]) => {
-                  const name = uri.replace(/node_modules\/(.*?)\/index\.ts/, '$1')
-                  define(name, ['require', 'exports'], factory)
-                  console.log('define', name, factory)
-                })
-              }
-              load(factories)
-              models.forEach(model => model.onDidChangeContent(() => {
-                const { uri, factory } = transpile.call(worker, model)
-                factories[uri] = factory
-                load(factories)
-                console.log('change')
-              }))
-              console.log('ready')
-            })
-          )
-//*/
-      })
-    })
-  })
-</script>
+## Dit it blow your mind ? 🤯
+
+### Takeaway
+
+**Transduce**
+  - is **optimized** (iterate once, only needed items)
+  - is **generic** (any types of sync / async collection)
+  - powers **reactive & stream** based operations
+  - I <span style="color: red">🖤</span> reduce
+
+Curious? Look @ libs [Ramda](https://ramdajs.com/docs), [lodash/fp](https://gist.github.com/jfmengels/6b973b69c491375117dc) & [more](https://github.com/stoeffel/awesome-fp-js)...
+
+<br>
+
+*P.S. FP offers lot more [powerfull abstractions](https://www.youtube.com/watch?v=9QveBbn7t_c).*
