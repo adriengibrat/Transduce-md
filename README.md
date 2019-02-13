@@ -19,25 +19,25 @@ output: index.html
 > <cite>[clojure.org](https://clojure.org/reference/transducers)</cite>
 compose transformations <br>without awareness of input <br>nor creation of intermediate aggregates
 
-<small>* You may use it often without noticing it</small>
+<small class="fragment">* You may use it often without noticing it</small>
 
 --
 
 ## Functional programing ♨
 
+> <dfn title="">[Higher-order function](https://www.youtube.com/watch?v=BMUiFMZr7vk)</dfn><br>takes one or more functions as arguments or returns a function
+
 ```typescript
-const add = a => b => a + b; // returns a function
+const add = a => (b => a + b); // returns a function
 
 [1, 2, 3]
   .map(add(1))
-  .filter(a => !!(a % 2)) // odd predicate (returns boolean)
+  .filter(a => a % 2) // odd predicate (returns boolean)
 ;
 [1, 2, 3]
-  .reduce((sum, a) => sum + a, 0) // sum reducer (returns accumulator)
+  .reduce((acc, a) => acc + a, 0) // sum reducer (returns accumulator)
 ;
 ```
-
-> <dfn title="">[Higher-order function](https://www.youtube.com/watch?v=BMUiFMZr7vk)</dfn><br>takes one or more functions as arguments or returns a function
 
 --
 
@@ -49,13 +49,13 @@ import { add } from 'slides';
 const double = item => item * 2;
 
 const result = [1, 2, 3]
-  .map(add(1)) // [2, 3, 4]
-  .map(double) // [4, 6, 8]
+  .map(add(1))  // [2, 3, 4]
+  .map(double)  // [4, 6, 8]
   .map(add(-1)) // [3, 5, 7]
 ;
 ```
 
-<big style="color: red">❌</big> Loop 3&times;, allocating new array each time
+<span class="fragment"><big style="color: red">❌</big> Loop 3&times;, allocating new array each time</span>
 
 --
 
@@ -64,8 +64,8 @@ const result = [1, 2, 3]
 ```typescript
 import { add, double } from 'slides';
 
-const add1 = add(1);
 const minus1 = add(-1);
+const add1 = add(1);
 const compute = item => minus1(double(add1(item)));
 
 const result = [1, 2, 3]
@@ -73,85 +73,90 @@ const result = [1, 2, 3]
 ;
 ```
 
-<big style="color: green">✔</big> Loop once, allocating only one new array
+<span class="fragment"><big style="color: green">✔</big> Loop once, allocating only one new array</span>
 
 --
 
 ## Using composition 😁
 
 ```typescript
-import { pipe, add, double } from 'slides';
+import { pipe, minus1, double, add1 } from 'slides';
 
-// const compute = compose(add(-1), double, add(1));
-const compute = pipe(add(1), double, add(-1));
+// const compute = item => minus1(double(add1(item)));
+// const compute = compose(minus1, double, add1);
+const compute = pipe(add1, double, minus1);
 
 const result = [1, 2, 3]
   .map(compute)
 ;
 ```
 
-<big style="color: green">✔</big> Semantic, concise & efficient
+<span class="fragment"><big style="color: green">✔</big> Readable, concise & efficient</span>
 
 --
 
 ## Mixed operations ? 😵
 
 ```typescript
-import { odd, add } from 'slides';
+import { add1, odd } from 'slides';
+
+const gt2 = a => a > 2;
 
 const result = [1, 2, 3]
-  .map(add(1))
-  .filter(odd)
-  .slice(0, 1) // .filter(first(1))
+  .map(add1)   // [2, 3, 4]
+  .filter(gt2) // [3, 4]
+  .filter(odd) // [3]
 ;
-// const first = n => () => n-- > 0;
 ```
 
-<big style="color: red">❌</big> Loop 2&times;, allocates 3 new array
+<span class="fragment"><big style="color: red">❌</big> Loop 3&times;, allocates 3 new array</span>
 
 --
 
 ## Combine predicates 😆
 
 ```typescript
-import { odd, first } from 'slides';
+import { gt2, odd } from 'slides';
 
-// every = AND, some = OR
-const pass = (logic: 'every' | 'some', predicates: Function[]) => 
+// logic: every = AND, some = OR
+const pass = (logic, predicates) => 
   a => predicates[logic](predicate => predicate(a))
 ;
 
-const filter = pass('every', [odd, first(1)]);
+const filter = pass('every', [gt2, odd]);
 ```
 
-<big style="color: green">✔</big> Useful with all predicate operations: filter, find, findIndex...
+<span class="fragment"><big style="color: green">✔</big> Useful with all predicate operations: filter, find...</span>
 
 --
 ## Still no mixed operation 😵
 
 ```typescript
-import { add, pass, odd, first } from 'slides';
+import { add1, odd, gt2 } from 'slides';
 
 const result = [1, 2, 3]
-  .map(add(1))
-  .filter(pass('every', [odd, first(1)]))
+  .map(add1)
+  .filter(odd)
+  .find(gt2)
 ;
 ```
 
-<big style="color: red">❌</big> Loop 2&times;, allocates 2 new array
+<span class="fragment"><big style="color: red">❌</big> Loop 3&times;, allocates 3 new array <img class="fragment" src="https://i.giphy.com/media/hc10gBL10d3Ko/source.gif" style="height: 5em; vertical-align: middle"/></span>
 
 --
 
 ## Be optimal 🤩
 
-![transduce is optimal](transduce.svg)
+![chain is not optimal](chain.svg)
+
+<div class="fragment" style="width: 66%">![transduce is optimal](transduce.svg)</div>
 
 --
 
 ## Reduce all the things 😎
 
 ```typescript
-const append = (list, value) => { list.push(value); return list; };
+import { append } from 'slides';
 
 const map = mapper =>
   (list, value) => append(list, mapper(value))
@@ -159,50 +164,67 @@ const map = mapper =>
 const filter = predicate =>
   (list, value) => predicate(value) ? append(list, value) : list
 ;
-const take = n => // =~ first
-  (list, value) => list.length < n ? append(list, value) : list
+const find = predicate =>
+  (_, value) => predicate(value) ? { value, stop: true } : null
 ;
 ```
 
-<big style="color: blue">‼</big> Implement every operation with 'reduce'
+<span class="fragment"><big style="color: red">💕</big> Implement every operation as a reducer</span>
 
 --
 
 ## Make it composable 🤪
 
 ```typescript
-import { append } from 'slides';
+let _map, _filter, _find; // _map(_filter(_find())) returns a reducer
 
-const map = mapper => append =>
-  (list, value) => append(list, mapper(value))
+const map = mapper =>
+  _map = next => (acc, value) => next(acc, mapper(value))
 ;
-const filter = predicate => append =>
-  (list, value) => predicate(value) ? append(list, value) : list
+const filter = predicate =>
+  _filter = next => (acc, value) => predicate(value) ? next(acc, value) : acc
 ;
-const take = n => append =>
-  (list, value) => list.length < n ? append(list, value) : list
+const find = predicate =>
+  _find = () => (_, value) => predicate(value) ? { value, stop: true } : null
 ;
 ```
 
-<big style="color: blue">‼</big> Now we can compose reducers
+<span class="fragment"><big style="color: green">🤟</big> Tansformation as factories of reducers are composable!</span>
 
 --
 
 ## Compose reducers 😲
 
 ```typescript
-import { pipe, filter, take, map, add, odd } from 'slides';
+import { pipe, map, add1, filter, odd, find, gt2, noop } from 'slides';
 
 const transform = pipe(
-  map(add(1)),
+  map(add1),
   filter(odd),
-  take(1),
+  find(gt2),
+);
+
+const result = [1, 2, 3].reduce(transform(noop));
+```
+
+<span class="fragment"><big style="color: green">✔</big> Rx pipe pattern ;) &nbsp; </span>
+<span class="fragment">&nbsp; transform + reduce = transduce</span>
+--
+
+## Reduce to anything 🤠
+
+```typescript
+import { pipe, map, add1, filter, odd, append } from 'slides';
+
+const transform = pipe(
+  map(add1),
+  filter(odd),
 );
 
 const result = [1, 2, 3].reduce(transform(append), []);
 ```
 
-<big style="color: green">✔</big> rx pipe pattern ;)
+<span class="fragment"><big style="color: green">✔</big> Accumulator & 'append' function are linked (aggregate)</span>
 
 --
 
@@ -211,54 +233,36 @@ const result = [1, 2, 3].reduce(transform(append), []);
 ```typescript
 import { reduce } from 'slides';
 
-const transduce = (transform, append, accumulator, list) =>
-  reduce(transform(append), accumulator, list)
-// list.reduce(transform(append), accumulator)
+const transduce = (transform, aggregate, accumulator, list) =>
+  reduce(transform(aggregate), accumulator, list)
 ;
 ```
 
-<big style="color: green">✔</big> Fine, but how does this abstract list type ?
+<span class="fragment"><big style="color: green">✔</big> Fine, but how does this abstract input list type ?</span>
 
 --
 
 ## A generic reduce 🤓
 
 ```typescript
-const _reduce = (reducer, accumulator, iterator) => {
-  let step;
-  do {
-    step = iterator.next();
-    accumulator = reducer(accumulator, step.value);
-  } while (!step.done);
-  return accumulator;
-}
-```
-
-<big style="color: green">✔</big> Iterator allows to abstract how to reduce any iterable
-
---
-
-## Stop iteration 🤠
-
-```typescript
 const reduce = (reducer, accumulator, iterator) => {
-  let step;
-  do {
-    step = iterator.next();
+  let step = iterator.next();
+  while (!step.done) {
     accumulator = reducer(accumulator, step.value);
-    if (accumulator.reduced) {
+    if (accumulator.stop) {
       return accumulator.value;
     }
-  } while (!step.done)
+    step = iterator.next();
+  }
   return accumulator.value;
 }
 ```
 
-<big style="color: green">✔</big> Avoid to iterate whole collection when not needed
+<span class="fragment"><big style="color: green">✔</big> Iterator allows to abstract how to reduce any iterable</span>
 
 --
 
-## Dit it blow your mind ? 🤯
+## It blow your mind 🤯
 
 ### Takeaway
 
@@ -268,8 +272,8 @@ const reduce = (reducer, accumulator, iterator) => {
   - powers **reactive & stream** based operations
   - I <span style="color: red">🖤</span> reduce
 
-Curious? Look @ libs [Ramda](https://ramdajs.com/docs), [lodash/fp](https://gist.github.com/jfmengels/6b973b69c491375117dc) & [more](https://github.com/stoeffel/awesome-fp-js)...
+Curious? Look @ libs [RxJs](https://rxjs-dev.firebaseapp.com), [Ramda](https://ramdajs.com/docs), [lodash/fp](https://gist.github.com/jfmengels/6b973b69c491375117dc) & [more](https://github.com/stoeffel/awesome-fp-js)...
 
 <br>
 
-*P.S. FP offers lot more [powerfull abstractions](https://www.youtube.com/watch?v=9QveBbn7t_c).*
+*P.S. Slides source [github.com/adriengibrat/Transduce-md](https://github.com/adriengibrat/Transduce-md)*

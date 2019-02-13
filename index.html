@@ -468,7 +468,7 @@ cite {
 <p><cite><a href="https://clojure.org/reference/transducers">clojure.org</a></cite>
 compose transformations <br>without awareness of input <br>nor creation of intermediate aggregates</p>
 </blockquote>
-<p><small>* You may use it often without noticing it</small></p>
+<p><small class="fragment">* You may use it often without noticing it</small></p>
 </section>
       </div>
     </div>
@@ -476,19 +476,19 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-3">
         <div data-id="3" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="functional-programing-">Functional programing ♨</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> add = <span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> b =&gt; a + b; <span class="hljs-comment">// returns a function</span>
-
-[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
-  .map(add(<span class="hljs-number">1</span>))
-  .filter(<span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> !!(a % <span class="hljs-number">2</span>)) <span class="hljs-comment">// odd predicate (returns boolean)</span>
-;
-[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
-  .reduce(<span class="hljs-function">(<span class="hljs-params">sum, a</span>) =&gt;</span> sum + a, <span class="hljs-number">0</span>) <span class="hljs-comment">// sum reducer (returns accumulator)</span>
-;
-</code></pre>
 <blockquote>
 <p><dfn title=""><a href="https://www.youtube.com/watch?v=BMUiFMZr7vk">Higher-order function</a></dfn><br>takes one or more functions as arguments or returns a function</p>
 </blockquote>
+<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> add = <span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> (<span class="hljs-function"><span class="hljs-params">b</span> =&gt;</span> a + b); <span class="hljs-comment">// returns a function</span>
+
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .map(add(<span class="hljs-number">1</span>))
+  .filter(<span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> a % <span class="hljs-number">2</span>) <span class="hljs-comment">// odd predicate (returns boolean)</span>
+;
+[<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
+  .reduce(<span class="hljs-function">(<span class="hljs-params">acc, a</span>) =&gt;</span> acc + a, <span class="hljs-number">0</span>) <span class="hljs-comment">// sum reducer (returns accumulator)</span>
+;
+</code></pre>
 </section>
       </div>
     </div>
@@ -501,12 +501,12 @@ compose transformations <br>without awareness of input <br>nor creation of inter
 <span class="hljs-keyword">const</span> double = <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> item * <span class="hljs-number">2</span>;
 
 <span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
-  .map(add(<span class="hljs-number">1</span>)) <span class="hljs-comment">// [2, 3, 4]</span>
-  .map(double) <span class="hljs-comment">// [4, 6, 8]</span>
+  .map(add(<span class="hljs-number">1</span>))  <span class="hljs-comment">// [2, 3, 4]</span>
+  .map(double)  <span class="hljs-comment">// [4, 6, 8]</span>
   .map(add(<span class="hljs-number">-1</span>)) <span class="hljs-comment">// [3, 5, 7]</span>
 ;
 </code></pre>
-<p><big style="color: red">❌</big> Loop 3&times;, allocating new array each time</p>
+<p><span class="fragment"><big style="color: red">❌</big> Loop 3&times;, allocating new array each time</span></p>
 </section>
       </div>
     </div>
@@ -516,15 +516,15 @@ compose transformations <br>without awareness of input <br>nor creation of inter
         <section class="slide-content"><h2 id="fusion-">Fusion 😃</h2>
 <pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add, double } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">const</span> add1 = add(<span class="hljs-number">1</span>);
 <span class="hljs-keyword">const</span> minus1 = add(<span class="hljs-number">-1</span>);
+<span class="hljs-keyword">const</span> add1 = add(<span class="hljs-number">1</span>);
 <span class="hljs-keyword">const</span> compute = <span class="hljs-function"><span class="hljs-params">item</span> =&gt;</span> minus1(double(add1(item)));
 
 <span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
   .map(compute)
 ;
 </code></pre>
-<p><big style="color: green">✔</big> Loop once, allocating only one new array</p>
+<p><span class="fragment"><big style="color: green">✔</big> Loop once, allocating only one new array</span></p>
 </section>
       </div>
     </div>
@@ -532,16 +532,17 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-6">
         <div data-id="6" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="using-composition-">Using composition 😁</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, add, double } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, minus1, double, add1 } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-comment">// const compute = compose(add(-1), double, add(1));</span>
-<span class="hljs-keyword">const</span> compute = pipe(add(<span class="hljs-number">1</span>), double, add(<span class="hljs-number">-1</span>));
+<span class="hljs-comment">// const compute = item =&gt; minus1(double(add1(item)));</span>
+<span class="hljs-comment">// const compute = compose(minus1, double, add1);</span>
+<span class="hljs-keyword">const</span> compute = pipe(add1, double, minus1);
 
 <span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
   .map(compute)
 ;
 </code></pre>
-<p><big style="color: green">✔</big> Semantic, concise &amp; efficient</p>
+<p><span class="fragment"><big style="color: green">✔</big> Readable, concise &amp; efficient</span></p>
 </section>
       </div>
     </div>
@@ -549,16 +550,17 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-7">
         <div data-id="7" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="mixed-operations-">Mixed operations ? 😵</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { odd, add } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add1, odd } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+
+<span class="hljs-keyword">const</span> gt2 = <span class="hljs-function"><span class="hljs-params">a</span> =&gt;</span> a &gt; <span class="hljs-number">2</span>;
 
 <span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
-  .map(add(<span class="hljs-number">1</span>))
-  .filter(odd)
-  .slice(<span class="hljs-number">0</span>, <span class="hljs-number">1</span>) <span class="hljs-comment">// .filter(first(1))</span>
+  .map(add1)   <span class="hljs-comment">// [2, 3, 4]</span>
+  .filter(gt2) <span class="hljs-comment">// [3, 4]</span>
+  .filter(odd) <span class="hljs-comment">// [3]</span>
 ;
-<span class="hljs-comment">// const first = n =&gt; () =&gt; n-- &gt; 0;</span>
 </code></pre>
-<p><big style="color: red">❌</big> Loop 2&times;, allocates 3 new array</p>
+<p><span class="fragment"><big style="color: red">❌</big> Loop 3&times;, allocates 3 new array</span></p>
 </section>
       </div>
     </div>
@@ -566,16 +568,16 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-8">
         <div data-id="8" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="combine-predicates-">Combine predicates 😆</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { odd, first } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { gt2, odd } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-comment">// every = AND, some = OR</span>
-<span class="hljs-keyword">const</span> pass = <span class="hljs-function">(<span class="hljs-params">logic: 'every' | 'some', predicates: <span class="hljs-built_in">Function</span>[]</span>) =&gt;</span> 
+<span class="hljs-comment">// logic: every = AND, some = OR</span>
+<span class="hljs-keyword">const</span> pass = <span class="hljs-function">(<span class="hljs-params">logic, predicates</span>) =&gt;</span> 
   a =&gt; predicates[logic](<span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span> predicate(a))
 ;
 
-<span class="hljs-keyword">const</span> filter = pass(<span class="hljs-string">'every'</span>, [odd, first(<span class="hljs-number">1</span>)]);
+<span class="hljs-keyword">const</span> filter = pass(<span class="hljs-string">'every'</span>, [gt2, odd]);
 </code></pre>
-<p><big style="color: green">✔</big> Useful with all predicate operations: filter, find, findIndex...</p>
+<p><span class="fragment"><big style="color: green">✔</big> Useful with all predicate operations: filter, find...</span></p>
 </section>
       </div>
     </div>
@@ -583,14 +585,15 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-9">
         <div data-id="9" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="still-no-mixed-operation-">Still no mixed operation 😵</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add, pass, odd, first } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { add1, odd, gt2 } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
 <span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>]
-  .map(add(<span class="hljs-number">1</span>))
-  .filter(pass(<span class="hljs-string">'every'</span>, [odd, first(<span class="hljs-number">1</span>)]))
+  .map(add1)
+  .filter(odd)
+  .find(gt2)
 ;
 </code></pre>
-<p><big style="color: red">❌</big> Loop 2&times;, allocates 2 new array</p>
+<p><span class="fragment"><big style="color: red">❌</big> Loop 3&times;, allocates 3 new array <img class="fragment" src="https://i.giphy.com/media/hc10gBL10d3Ko/source.gif" style="height: 5em; vertical-align: middle"/></span></p>
 </section>
       </div>
     </div>
@@ -598,15 +601,15 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-10">
         <div data-id="10" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="be-optimal-">Be optimal 🤩</h2>
-<p><img src="transduce.svg" alt="transduce is optimal"></p>
-</section>
+<p><img src="chain.svg" alt="chain is not optimal"></p>
+<div class="fragment" style="width: 66%"><img src="transduce.svg" alt="transduce is optimal"></div></section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-11">
         <div data-id="11" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="reduce-all-the-things-">Reduce all the things 😎</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> append = <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> { list.push(value); <span class="hljs-keyword">return</span> list; };
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { append } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
 <span class="hljs-keyword">const</span> map = <span class="hljs-function"><span class="hljs-params">mapper</span> =&gt;</span>
   (list, value) =&gt; append(list, mapper(value))
@@ -614,11 +617,11 @@ compose transformations <br>without awareness of input <br>nor creation of inter
 <span class="hljs-keyword">const</span> filter = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
   (list, value) =&gt; predicate(value) ? append(list, value) : list
 ;
-<span class="hljs-keyword">const</span> take = <span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> <span class="hljs-comment">// =~ first</span>
-  (list, value) =&gt; list.length &lt; n ? append(list, value) : list
+<span class="hljs-keyword">const</span> find = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
+  (_, value) =&gt; predicate(value) ? { value, stop: <span class="hljs-literal">true</span> } : <span class="hljs-literal">null</span>
 ;
 </code></pre>
-<p><big style="color: blue">‼</big> Implement every operation with &#39;reduce&#39;</p>
+<p><span class="fragment"><big style="color: red">💕</big> Implement every operation as a reducer</span></p>
 </section>
       </div>
     </div>
@@ -626,19 +629,19 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-12">
         <div data-id="12" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="make-it-composable-">Make it composable 🤪</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { append } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">let</span> _map, _filter, _find; <span class="hljs-comment">// _map(_filter(_find())) returns a reducer</span>
 
-<span class="hljs-keyword">const</span> map = <span class="hljs-function"><span class="hljs-params">mapper</span> =&gt;</span> append =&gt;
-  <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> append(list, mapper(value))
+<span class="hljs-keyword">const</span> map = <span class="hljs-function"><span class="hljs-params">mapper</span> =&gt;</span>
+  _map = <span class="hljs-function"><span class="hljs-params">next</span> =&gt;</span> (acc, value) =&gt; next(acc, mapper(value))
 ;
-<span class="hljs-keyword">const</span> filter = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span> append =&gt;
-  <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> predicate(value) ? append(list, value) : list
+<span class="hljs-keyword">const</span> filter = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
+  _filter = <span class="hljs-function"><span class="hljs-params">next</span> =&gt;</span> (acc, value) =&gt; predicate(value) ? next(acc, value) : acc
 ;
-<span class="hljs-keyword">const</span> take = <span class="hljs-function"><span class="hljs-params">n</span> =&gt;</span> append =&gt;
-  <span class="hljs-function">(<span class="hljs-params">list, value</span>) =&gt;</span> list.length &lt; n ? append(list, value) : list
+<span class="hljs-keyword">const</span> find = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
+  _find = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> (_, value) =&gt; predicate(value) ? { value, stop: <span class="hljs-literal">true</span> } : <span class="hljs-literal">null</span>
 ;
 </code></pre>
-<p><big style="color: blue">‼</big> Now we can compose reducers</p>
+<p><span class="fragment"><big style="color: green">🤟</big> Tansformation as factories of reducers are composable!</span></p>
 </section>
       </div>
     </div>
@@ -646,76 +649,76 @@ compose transformations <br>without awareness of input <br>nor creation of inter
       <div class="slide hidden" id="slide-13">
         <div data-id="13" class="slide-overlay"></div>
         <section class="slide-content"><h2 id="compose-reducers-">Compose reducers 😲</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, filter, take, map, add, odd } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, map, add1, filter, odd, find, gt2, noop } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
 <span class="hljs-keyword">const</span> transform = pipe(
-  map(add(<span class="hljs-number">1</span>)),
+  map(add1),
   filter(odd),
-  take(<span class="hljs-number">1</span>),
+  find(gt2),
 );
 
-<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].reduce(transform(append), []);
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].reduce(transform(noop));
 </code></pre>
-<p><big style="color: green">✔</big> rx pipe pattern ;)</p>
+<p><span class="fragment"><big style="color: green">✔</big> Rx pipe pattern ;) &nbsp; </span>
+<span class="fragment">&nbsp; transform + reduce = transduce</span></p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-14">
         <div data-id="14" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="reusable-transduce-">Reusable transduce 🤑</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { reduce } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+        <section class="slide-content"><h2 id="reduce-to-anything-">Reduce to anything 🤠</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { pipe, map, add1, filter, odd, append } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
 
-<span class="hljs-keyword">const</span> transduce = <span class="hljs-function">(<span class="hljs-params">transform, append, accumulator, list</span>) =&gt;</span>
-  reduce(transform(append), accumulator, list)
-<span class="hljs-comment">// list.reduce(transform(append), accumulator)</span>
-;
+<span class="hljs-keyword">const</span> transform = pipe(
+  map(add1),
+  filter(odd),
+);
+
+<span class="hljs-keyword">const</span> result = [<span class="hljs-number">1</span>, <span class="hljs-number">2</span>, <span class="hljs-number">3</span>].reduce(transform(append), []);
 </code></pre>
-<p><big style="color: green">✔</big> Fine, but how does this abstract list type ?</p>
+<p><span class="fragment"><big style="color: green">✔</big> Accumulator &amp; &#39;append&#39; function are linked (aggregate)</span></p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-15">
         <div data-id="15" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="a-generic-reduce-">A generic reduce 🤓</h2>
-<pre><code class="lang-typescript"><span class="hljs-keyword">const</span> _reduce = <span class="hljs-function">(<span class="hljs-params">reducer, accumulator, iterator</span>) =&gt;</span> {
-  <span class="hljs-keyword">let</span> step;
-  <span class="hljs-keyword">do</span> {
-    step = iterator.next();
-    accumulator = reducer(accumulator, step.value);
-  } <span class="hljs-keyword">while</span> (!step.done);
-  <span class="hljs-keyword">return</span> accumulator;
-}
+        <section class="slide-content"><h2 id="reusable-transduce-">Reusable transduce 🤑</h2>
+<pre><code class="lang-typescript"><span class="hljs-keyword">import</span> { reduce } <span class="hljs-keyword">from</span> <span class="hljs-string">'slides'</span>;
+
+<span class="hljs-keyword">const</span> transduce = <span class="hljs-function">(<span class="hljs-params">transform, aggregate, accumulator, list</span>) =&gt;</span>
+  reduce(transform(aggregate), accumulator, list)
+;
 </code></pre>
-<p><big style="color: green">✔</big> Iterator allows to abstract how to reduce any iterable</p>
+<p><span class="fragment"><big style="color: green">✔</big> Fine, but how does this abstract input list type ?</span></p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-16">
         <div data-id="16" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="stop-iteration-">Stop iteration 🤠</h2>
+        <section class="slide-content"><h2 id="a-generic-reduce-">A generic reduce 🤓</h2>
 <pre><code class="lang-typescript"><span class="hljs-keyword">const</span> reduce = <span class="hljs-function">(<span class="hljs-params">reducer, accumulator, iterator</span>) =&gt;</span> {
-  <span class="hljs-keyword">let</span> step;
-  <span class="hljs-keyword">do</span> {
-    step = iterator.next();
+  <span class="hljs-keyword">let</span> step = iterator.next();
+  <span class="hljs-keyword">while</span> (!step.done) {
     accumulator = reducer(accumulator, step.value);
-    <span class="hljs-keyword">if</span> (accumulator.reduced) {
+    <span class="hljs-keyword">if</span> (accumulator.stop) {
       <span class="hljs-keyword">return</span> accumulator.value;
     }
-  } <span class="hljs-keyword">while</span> (!step.done)
+    step = iterator.next();
+  }
   <span class="hljs-keyword">return</span> accumulator.value;
 }
 </code></pre>
-<p><big style="color: green">✔</big> Avoid to iterate whole collection when not needed</p>
+<p><span class="fragment"><big style="color: green">✔</big> Iterator allows to abstract how to reduce any iterable</span></p>
 </section>
       </div>
     </div>
     <div class="slide-wrapper">
       <div class="slide hidden" id="slide-17">
         <div data-id="17" class="slide-overlay"></div>
-        <section class="slide-content"><h2 id="dit-it-blow-your-mind-">Dit it blow your mind ? 🤯</h2>
+        <section class="slide-content"><h2 id="it-blow-your-mind-">It blow your mind 🤯</h2>
 <h3 id="takeaway">Takeaway</h3>
 <p><strong>Transduce</strong></p>
 <ul>
@@ -724,9 +727,9 @@ compose transformations <br>without awareness of input <br>nor creation of inter
 <li>powers <strong>reactive &amp; stream</strong> based operations</li>
 <li>I <span style="color: red">🖤</span> reduce</li>
 </ul>
-<p>Curious? Look @ libs <a href="https://ramdajs.com/docs">Ramda</a>, <a href="https://gist.github.com/jfmengels/6b973b69c491375117dc">lodash/fp</a> &amp; <a href="https://github.com/stoeffel/awesome-fp-js">more</a>...</p>
+<p>Curious? Look @ libs <a href="https://rxjs-dev.firebaseapp.com">RxJs</a>, <a href="https://ramdajs.com/docs">Ramda</a>, <a href="https://gist.github.com/jfmengels/6b973b69c491375117dc">lodash/fp</a> &amp; <a href="https://github.com/stoeffel/awesome-fp-js">more</a>...</p>
 <p><br></p>
-<p><em>P.S. FP offers lot more <a href="https://www.youtube.com/watch?v=9QveBbn7t_c">powerfull abstractions</a>.</em></p>
+<p><em>P.S. Slides source <a href="https://github.com/adriengibrat/Transduce-md">github.com/adriengibrat/Transduce-md</a></em></p>
 </section>
       </div>
     </div>
