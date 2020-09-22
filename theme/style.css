@@ -412,7 +412,7 @@ code {
   background-repeat: no-repeat;
   background-size: 100%;
   background-origin: padding-box;
-  background-image: url(theme/img/footer.jpg);
+  /*background-image: url(theme/img/footer.jpg);*/
 }
 
 #slide-1 h1 {
