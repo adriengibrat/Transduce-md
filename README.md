@@ -1,7 +1,7 @@
 title: Transducers, powerful abstraction
 author:
   name: I'm Adrien, frontend developer
-  email: a.gibrat@oodrive.com
+  email: agibrat@frontguys.fr
 theme: ./theme
 controls: false
 output: index.html
