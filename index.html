@@ -95,7 +95,6 @@ body {
   z-index: 2;
   opacity: 1;
   max-width: 85vw;
-  max-height: 85vh;
   margin: 0 auto 0;
   font-size: 200%;
   font-weight: 200;
@@ -419,7 +418,7 @@ code {
   background-repeat: no-repeat;
   background-size: 100%;
   background-origin: padding-box;
- /* background-image: url(theme/img/footer.jpg);*/
+  /*background-image: url(theme/img/footer.jpg);*/
 }
 
 #slide-1 h1 {
@@ -618,7 +617,7 @@ compose transformations <br>without awareness of input <br>nor creation of inter
   (list, value) =&gt; predicate(value) ? append(list, value) : list
 ;
 <span class="hljs-keyword">const</span> find = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
-  (_, value) =&gt; predicate(value) ? { value, stop: <span class="hljs-literal">true</span> } : <span class="hljs-literal">null</span>
+  (_, value) =&gt; predicate(value) ? { value, done: <span class="hljs-literal">true</span> } : <span class="hljs-literal">null</span>
 ;
 </code></pre>
 <p><span class="fragment"><big style="color: red">💕</big> Implement every operation as a reducer</span></p>
@@ -638,7 +637,7 @@ compose transformations <br>without awareness of input <br>nor creation of inter
   _filter = <span class="hljs-function"><span class="hljs-params">next</span> =&gt;</span> (acc, value) =&gt; predicate(value) ? next(acc, value) : acc
 ;
 <span class="hljs-keyword">const</span> find = <span class="hljs-function"><span class="hljs-params">predicate</span> =&gt;</span>
-  _find = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> (_, value) =&gt; predicate(value) ? { value, stop: <span class="hljs-literal">true</span> } : <span class="hljs-literal">null</span>
+  _find = <span class="hljs-function"><span class="hljs-params">()</span> =&gt;</span> (_, value) =&gt; predicate(value) ? { value, done: <span class="hljs-literal">true</span> } : <span class="hljs-literal">null</span>
 ;
 </code></pre>
 <p><span class="fragment"><big style="color: green">🤟</big> Tansformation as factories of reducers are composable!</span></p>
@@ -703,7 +702,7 @@ compose transformations <br>without awareness of input <br>nor creation of inter
   <span class="hljs-keyword">let</span> step = iterator.next();
   <span class="hljs-keyword">while</span> (!step.done) {
     accumulator = reducer(accumulator, step.value);
-    <span class="hljs-keyword">if</span> (accumulator.stop) {
+    <span class="hljs-keyword">if</span> (accumulator.done) {
       <span class="hljs-keyword">return</span> accumulator.value;
     }
     step = iterator.next();
