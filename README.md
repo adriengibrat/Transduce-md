@@ -165,7 +165,7 @@ const filter = predicate =>
   (list, value) => predicate(value) ? append(list, value) : list
 ;
 const find = predicate =>
-  (_, value) => predicate(value) ? { value, stop: true } : null
+  (_, value) => predicate(value) ? { value, done: true } : null
 ;
 ```
 
@@ -185,7 +185,7 @@ const filter = predicate =>
   _filter = next => (acc, value) => predicate(value) ? next(acc, value) : acc
 ;
 const find = predicate =>
-  _find = () => (_, value) => predicate(value) ? { value, stop: true } : null
+  _find = () => (_, value) => predicate(value) ? { value, done: true } : null
 ;
 ```
 
@@ -249,7 +249,7 @@ const reduce = (reducer, accumulator, iterator) => {
   let step = iterator.next();
   while (!step.done) {
     accumulator = reducer(accumulator, step.value);
-    if (accumulator.stop) {
+    if (accumulator.done) {
       return accumulator.value;
     }
     step = iterator.next();
